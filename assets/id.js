@@ -7,8 +7,8 @@ document.querySelector(".login").addEventListener('click', () => {
 
 var welcome = "Dzień dobry!";
 
-var date = new Date();
-if (date.getHours() >= 18){
+var hours = new Date().getHours();
+if (hours >= 18 || hours < 4){
     welcome = "Dobry wieczór!"
 }
 document.querySelector(".welcome").innerHTML = welcome;
