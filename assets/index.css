@@ -604,3 +604,11 @@ input:focus{
     }
 
 }
+body {
+    background: url('e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.upload {
+    background: rgba(255, 255, 255, 0.7); 
+    backdrop-filter: blur(5px); 
