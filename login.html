@@ -14,13 +14,19 @@
 
   <p id="error-message" style="color: red; display: none;">Błędne hasło lub hasło zostało już użyte!</p>
 
-  <!-- Najpierw ładowanie biblioteki Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Najpierw ładowanie najnowszej wersji skryptu Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
 
   <!-- Potem twój kod -->
   <script>
     document.addEventListener("DOMContentLoaded", async function () {
-      // 👇 upewnij się, że odwołujesz się do window.supabase dopiero po załadowaniu skryptu
+      // Sprawdź, czy Supabase jest załadowane
+      if (!window.supabase) {
+        console.error('Supabase is not loaded correctly!');
+        return;
+      }
+      
+      // 👇 inicjalizacja klienta Supabase
       const supabase = window.supabase.createClient(
         'https://dvvugjmnjjhhafqcdpmt.supabase.co',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4'
@@ -34,31 +40,36 @@
         const password = document.getElementById('password').value;
         errorMessage.style.display = 'none';
 
-        const { data, error } = await supabase
-          .from('passwords')
-          .select('*')
-          .eq('password', password)
-          .eq('used', false)
-          .single();
+        try {
+          const { data, error } = await supabase
+            .from('passwords')
+            .select('*')
+            .eq('password', password)
+            .eq('used', false)
+            .single();
 
-        if (error || !data) {
+          if (error || !data) {
+            errorMessage.style.display = 'block';
+            return;
+          }
+
+          const { error: updateError } = await supabase
+            .from('passwords')
+            .update({ used: true })
+            .eq('id', data.id);
+
+          if (updateError) {
+            console.error('Error updating password:', updateError);
+            errorMessage.style.display = 'block';
+            return;
+          }
+
+          sessionStorage.setItem('loggedIn', 'true');
+          window.location.href = 'index.html';
+        } catch (err) {
+          console.error('Error processing login:', err);
           errorMessage.style.display = 'block';
-          return;
         }
-
-        const { error: updateError } = await supabase
-          .from('passwords')
-          .update({ used: true })
-          .eq('id', data.id);
-
-        if (updateError) {
-          console.error('Error updating password:', updateError);
-          errorMessage.style.display = 'block';
-          return;
-        }
-
-        sessionStorage.setItem('loggedIn', 'true');
-        window.location.href = 'index.html';
       });
     });
   </script>
