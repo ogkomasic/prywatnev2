@@ -1,27 +1,55 @@
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<div id="login-box">
-  <input type="password" id="passwordInput" placeholder="Wpisz hasło" />
-  <button onclick="checkPassword()">Zaloguj</button>
-  <p id="message"></p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
+</head>
+<body>
+  <h1>Enter your password to access the site</h1>
+  <form id="loginForm">
+    <input type="password" id="password" required placeholder="Enter password">
+    <button type="submit">Submit</button>
+  </form>
 
-<div id="content" style="display:none;">
-  <!-- tutaj twoja tajna strona -->
-  <h1>Witaj w prywatnej części 🎉</h1>
-</div>
-<script>
-  const supabase = supabase.createClient("https://YOUR_PROJECT.supabase.co", "PUBLIC_ANON_KEY");
+  <script>
+    // Inicjalizowanie Supabase bezpośrednio w HTML
+    const supabaseUrl = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';  // Twój URL Supabase
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';  // Twój anonimowy klucz API
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-  async function checkPassword() {
-    const pw = document.getElementById("passwordInput").value;
+    // Obsługa formularza logowania
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const password = document.getElementById('password').value;
 
-    const { data, error } = await supabase.rpc('check_password', { pw });
+      // Sprawdzenie, czy hasło jest poprawne i nie zostało użyte
+      const { data, error } = await supabase
+        .from('passwords')
+        .select('*')
+        .eq('password', password)
+        .eq('used', false)
+        .single();
 
-    if (data === true) {
-      document.getElementById("login-box").style.display = "none";
-      document.getElementById("content").style.display = "block";
-    } else {
-      document.getElementById("message").innerText = "Błędne lub zużyte hasło!";
-    }
-  }
-</script>
+      if (error || !data) {
+        alert('Invalid or used password');
+        return;
+      }
+
+      // Oznacz hasło jako użyte
+      await supabase
+        .from('passwords')
+        .update({ used: true })
+        .eq('id', data.id);
+
+      // Zapisz informację o logowaniu w sessionStorage
+      sessionStorage.setItem('loggedIn', 'true');
+
+      // Przekierowanie na stronę główną
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
