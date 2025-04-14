@@ -8,15 +8,100 @@
     <!-- Sprawdzanie, czy użytkownik jest zalogowany -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Sprawdzanie statusu logowania
+            // Sprawdzamy, czy użytkownik jest zalogowany
             if (!sessionStorage.getItem('loggedIn')) {
-                // Jeśli użytkownik nie jest zalogowany, przekieruj na stronę logowania
-                window.location.href = 'login.html';
+                // Jeśli nie jest, wyświetlamy modal z formularzem logowania
+                document.getElementById('loginModal').style.display = 'block';
             }
         });
-    </script>
-</head>
 
+        function checkPassword() {
+            var enteredPassword = document.getElementById('passwordInput').value;
+
+            // Sprawdzamy hasło (można je zastąpić dynamicznie lub z bazy danych)
+            var correctPassword = "tajnehaslo"; // Zmień to na swoje rzeczywiste hasło
+
+            if (enteredPassword === correctPassword) {
+                // Jeśli hasło jest poprawne, zapisujemy stan zalogowania
+                sessionStorage.setItem('loggedIn', 'true');
+                // Ukrywamy modal
+                document.getElementById('loginModal').style.display = 'none';
+            } else {
+                alert('Niepoprawne hasło! Spróbuj ponownie.');
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <!-- Modal z formularzem logowania -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
+            <h2>Proszę wpisać hasło, aby kontynuować:</h2>
+            <input type="password" id="passwordInput" placeholder="Wpisz hasło">
+            <button onclick="checkPassword()">Zaloguj</button>
+        </div>
+    </div>
+
+    <style>
+        /* Styl dla modala */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px;
+            width: 50%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    
 <body>
     <!-- Reszta Twojego kodu HTML -->
     <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
