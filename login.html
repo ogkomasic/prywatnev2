@@ -40,7 +40,10 @@
         const password = document.getElementById('password').value;
         errorMessage.style.display = 'none';
 
+        console.log("Password input:", password);  // Log the password input
+
         try {
+          // Debugging logs for select query
           const { data, error } = await supabase
             .from('passwords')
             .select('*')
@@ -48,11 +51,15 @@
             .eq('used', false)
             .single();
 
+          console.log("Data:", data);  // Log the response data
+          console.log("Error:", error);  // Log the error, if any
+
           if (error || !data) {
             errorMessage.style.display = 'block';
             return;
           }
 
+          // Update password as used
           const { error: updateError } = await supabase
             .from('passwords')
             .update({ used: true })
