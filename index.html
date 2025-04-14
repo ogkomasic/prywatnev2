@@ -7,12 +7,14 @@
 </head>
 <body>
     <script>
-        // Sprawdź, czy użytkownik jest zalogowany
-        if (!sessionStorage.getItem('loggedIn')) {
-            // Jeśli nie jest zalogowany, przekieruj do strony logowania
-            window.location.href = 'login.html';
-        }
-    </script>
+  // Sprawdzanie, czy użytkownik jest zalogowany
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!sessionStorage.getItem('loggedIn')) {
+      // Jeśli nie jest zalogowany, przekierowanie na stronę logowania
+      window.location.href = 'login.html';
+    }
+  });
+</script>
     
     <!-- Reszta kodu HTML -->
     <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
