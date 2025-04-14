@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
+  <!-- Upewnijmy się, że skrypt Supabase jest załadowany przed użyciem -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
 </head>
 <body>
@@ -17,9 +18,15 @@
   <p id="error-message" style="color: red; display: none;">Błędne hasło lub hasło zostało już użyte!</p>
 
   <script>
-    // Upewniamy się, że kod nie będzie uruchamiany, zanim strona i wszystkie zasoby nie zostaną w pełni załadowane
-    window.onload = function() {
-      // Inicjalizowanie Supabase po załadowaniu strony
+    // Czekamy na załadowanie skryptu Supabase i całej strony
+    document.addEventListener("DOMContentLoaded", function () {
+      // Sprawdzamy, czy Supabase jest załadowane
+      if (typeof supabase === 'undefined') {
+        console.error('Supabase script not loaded correctly.');
+        return;
+      }
+
+      // Inicjalizujemy Supabase
       const supabaseUrl = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';  // Twój URL Supabase
       const supabaseKey = 'YOUR_SUPABASE_KEY';  // Twój anonimowy klucz API
       const supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -27,49 +34,53 @@
       // Obsługa formularza logowania
       const form = document.getElementById('loginForm');
       const errorMessage = document.getElementById('error-message');
-      
-      form.addEventListener('submit', async function(event) {
+
+      form.addEventListener('submit', async function (event) {
         event.preventDefault();
         const password = document.getElementById('password').value;
 
         // Ukryj komunikat o błędzie przed nowym wysłaniem formularza
         errorMessage.style.display = 'none';
 
-        // Sprawdzenie, czy hasło jest poprawne i nie zostało użyte
-        const { data, error } = await supabase
-          .from('passwords')
-          .select('*')
-          .eq('password', password)
-          .eq('used', false)
-          .single();
+        try {
+          // Sprawdzamy, czy hasło jest poprawne i nie zostało użyte
+          const { data, error } = await supabase
+            .from('passwords')
+            .select('*')
+            .eq('password', password)
+            .eq('used', false)
+            .single();
 
-        if (error || !data) {
-          // Wyświetl komunikat o błędzie, jeśli hasło jest błędne lub zostało już użyte
-          console.log('Invalid or used password');
-          errorMessage.style.display = 'block'; // Pokazuje komunikat o błędzie
-          return;
-        }
+          if (error || !data) {
+            // Jeśli hasło jest błędne lub zostało już użyte
+            errorMessage.style.display = 'block'; // Pokazuje komunikat o błędzie
+            return;
+          }
 
-        // Oznacz hasło jako użyte
-        const { updateError } = await supabase
-          .from('passwords')
-          .update({ used: true })
-          .eq('id', data.id);
+          // Oznaczamy hasło jako użyte
+          const { updateError } = await supabase
+            .from('passwords')
+            .update({ used: true })
+            .eq('id', data.id);
 
-        if (updateError) {
-          // Jeśli wystąpi błąd przy aktualizacji, wyświetl komunikat o błędzie
-          console.log('Error marking password as used:', updateError);
+          if (updateError) {
+            console.error('Error marking password as used:', updateError);
+            errorMessage.style.display = 'block';
+            return;
+          }
+
+          // Zapisz informację o logowaniu w sessionStorage
+          sessionStorage.setItem('loggedIn', 'true');
+
+          // Przekierowanie na stronę główną
+          window.location.href = 'index.html';
+
+        } catch (error) {
+          console.error('Error processing login:', error);
           errorMessage.style.display = 'block';
-          return;
         }
-
-        // Zapisz informację o logowaniu w sessionStorage
-        sessionStorage.setItem('loggedIn', 'true');
-
-        // Przekierowanie na stronę główną
-        window.location.href = 'index.html';
       });
-    }
+    });
   </script>
 </body>
 </html>
