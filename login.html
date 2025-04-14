@@ -17,8 +17,8 @@
   <p id="error-message" style="color: red; display: none;">Błędne hasło lub hasło zostało już użyte!</p>
 
   <script>
-    // Przenosimy inicjalizację do środka skryptu, aby upewnić się, że Supabase jest załadowany przed użyciem
-    document.addEventListener('DOMContentLoaded', function() {
+    // Upewniamy się, że kod nie będzie uruchamiany, zanim strona i wszystkie zasoby nie zostaną w pełni załadowane
+    window.onload = function() {
       // Inicjalizowanie Supabase po załadowaniu strony
       const supabaseUrl = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';  // Twój URL Supabase
       const supabaseKey = 'YOUR_SUPABASE_KEY';  // Twój anonimowy klucz API
@@ -69,8 +69,7 @@
         // Przekierowanie na stronę główną
         window.location.href = 'index.html';
       });
-    });
+    }
   </script>
 </body>
 </html>
-
