@@ -1,301 +1,165 @@
-<!DOCTYPE html>
-<html lang="pl">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/index.css">
+    <link rel="icon" type="image/x-icon" href="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw">
     <title>mObywatel</title>
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
-    <link rel="icon" type="image/x-icon" href="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw">
-    
-    <style>
-        /* Popup logowania */
-        #login-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        #login-container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        #login-container input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            font-size: 16px;
-        }
-
-        #login-container button {
-            margin-top: 10px;
-            width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #error-message {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
-            display: none;
-        }
-    </style>
 </head>
 <body>
-
-<!-- MODAL DO LOGOWANIA -->
-<div id="login-overlay">
-    <div id="login-container">
-        <h2>Wpisz hasło</h2>
-        <form id="loginForm">
-            <input type="password" id="password" required placeholder="Hasło">
-            <button type="submit">Zaloguj się</button>
-        </form>
-        <p id="error-message">Błędne hasło lub już użyte!</p>
-    </div>
-</div>
-
-<script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
-
-    const supabaseUrl = 'https://dvvugjmnjjhhafqcdpmt.supabase.co'; // 🔧 ZMIEŃ
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';                  // 🔧 ZMIEŃ
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const loginOverlay = document.getElementById("login-overlay");
-    const loginForm = document.getElementById("loginForm");
-    const errorMessage = document.getElementById("error-message");
-
-    if (sessionStorage.getItem("loggedIn") === "true") {
-        loginOverlay.style.display = "none";
-    }
-
-    loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const password = document.getElementById("password").value;
-
-        let { data, error } = await supabase
-            .from("passwords")
-            .select("*")
-            .eq("password", password);
-
-        if (error) {
-            console.error("Błąd Supabase:", error.message);
-            return;
+     <script>
+        // Sprawdź, czy użytkownik jest zalogowany
+        if (!sessionStorage.getItem('loggedIn')) {
+            // Jeśli nie jest zalogowany, przekieruj do strony logowania
+            window.location.href = 'login.html';
         }
+    </script>
+    <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
+    <p class="logo_text">JEBAC E JEDRZEJEWSKA0</p>
 
-        if (data.length === 1 && data[0].used === false) {
-            await supabase
-                .from("passwords")
-                .update({ used: true })
-                .eq("password", password);
+    <p class="warning">JEBAC TEGO SHONA</p>
 
-            sessionStorage.setItem("loggedIn", "true");
-            loginOverlay.style.display = "none";
-        } else {
-            errorMessage.style.display = "block";
-        }
-    });
-</script>
-
-<script src="assets/index.js"></script>
-<script src="assets/manifest.js"></script>
-
-  <!-- ZAWARTOŚĆ STRONY PO ZALOGOWANIU -->
-  <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg" class="logo">
-  <p class="logo_text">JEBAC E JEDRZEJEWSKA0</p>
-
-  <p class="warning">JEBAC TEGO SHONA</p>
-
-  <div class="guide_holder">
-    <div class="top_holder">
-      <p class="guide_title">Instrukcja</p>
-      <img class="arrow" src="https://i.imgur.com/aUZmu0W.png">
+    <div class="guide_holder">
+        <div class="top_holder">
+            <p class="guide_title">Instrukcja</p>
+            <img class="arrow" src="https://i.imgur.com/aUZmu0W.png">
+        </div>
+        <div class="guide_text">
+            <span style="font-size: 17px; font-weight: 500;">Dla systemu IOS:</span><br>
+            <ul>
+                <li>Upewnij się, że używasz przeglądarki Safari</li>
+                <li>Uzupełnij dane i kliknij wejdź</li>
+                <li>Naciśji udostępnij -> Do Ekranu głównego</li>
+            </ul>
+            <span style="font-size: 17px; font-weight: 500;">Dla systemu Android:</span>
+            <ul>
+                <li>Upewnij się, że używasz przeglądarki google lub chrome</li>
+                <li>Uzupełnij dane i kliknij wejdź</li>
+                <li>Naciśji 3 kropki -> Dodaj do ekranu głównego</li>
+            </ul>
+        </div>
     </div>
-    <div class="guide_text">
-      <span style="font-size: 17px; font-weight: 500;">Dla systemu IOS:</span><br>
-      <ul>
-        <li>Upewnij się, że używasz przeglądarki Safari</li>
-        <li>Uzupełnij dane i kliknij wejdź</li>
-        <li>Naciśji udostępnij -> Do Ekranu głównego</li>
-      </ul>
-      <span style="font-size: 17px; font-weight: 500;">Dla systemu Android:</span>
-      <ul>
-        <li>Upewnij się, że używasz przeglądarki google lub chrome</li>
-        <li>Uzupełnij dane i kliknij wejdź</li>
-        <li>Naciśji 3 kropki -> Dodaj do ekranu głównego</li>
-      </ul>
+
+    <div class="upload">
+        <p class="error">To pole jest wymagane</p>
+        <img class="upload_uploaded">
+        <div class="upload_uploading"></div>
+        <div class="upload_grid">
+            <img class="upload_image" src="https://i.imgur.com/vwIQErh.png">
+            <p class="upload_text">Dodaj zdjęcie</p>
+        </div>
     </div>
-  </div>
 
-  <div class="upload">
-    <p class="error">To pole jest wymagane</p>
-    <img class="upload_uploaded">
-    <div class="upload_uploading"></div>
-    <div class="upload_grid">
-      <img class="upload_image" src="https://i.imgur.com/vwIQErh.png">
-      <p class="upload_text">Dodaj zdjęcie</p>
+    <div class="input_holder">
+        <input type="text" id="name" class="input" placeholder="">
+        <span class="placeholder">Imię (imiona)</span>
+        <p class="error">To pole jest wymagane</p>
     </div>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="name" class="input" placeholder="">
-    <span class="placeholder">Imię (imiona)</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="surname" class="input" placeholder="">
-    <span class="placeholder">Nazwisko</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <p class="top_info">Płeć</p>
-  <div class="selector_box">
-    <div class="selected_grid">
-      <p class="selector_text selected_text">Mężczyzna</p>
-      <img class="selected_arrow" src="https://i.imgur.com/RXsdBB6.png">
+ 
+    <div class="input_holder">
+        <input type="text" id="surname" class="input" placeholder="">
+        <span class="placeholder">Nazwisko</span>
+        <p class="error">To pole jest wymagane</p>
     </div>
-    <div class="option_box">
-      <div class="selector_option" id="m">Mężczyzna</div>
-      <div class="selector_option" id="k">Kobieta</div>
-      <div class="selector_option" id="k">EMILIA JEDRZEJEWSKA</div>
+
+    <p class="top_info">Płeć</p>
+    <div class="selector_box">
+        <div class="selected_grid">
+            <p class="selector_text selected_text">Mężczyzna</p>
+            <img class="selected_arrow" src="https://i.imgur.com/RXsdBB6.png">
+        </div>
+        <div class="option_box">
+            <div class="selector_option" id="m">
+                Mężczyzna
+            </div>
+            <div class="selector_option" id="k">
+                Kobieta
+            </div>
+        <div class="selector_option" id="k">
+                EMILIA JEDRZEJEWSKA
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="date">
-    <p class="top_info">Data urodzenia</p>
-    <div class="date_grid">
-      <input class="date_input" placeholder="DD" type="number">
-      <input class="date_input" placeholder="MM" type="number">
-      <input class="date_input" placeholder="YYYY" type="number">
+    <div class="date">
+        <p class="top_info">Data urodzenia</p>
+        <div class="date_grid">
+            <input class="date_input" placeholder="DD" type="number">
+    
+            </input>
+            <input class="date_input" placeholder="MM" type="number">
+    
+            </input>
+            <input class="date_input" placeholder="YYYY" type="number">
+    
+            </input>
+        </div>
+        <p class="error">Wprowadź prawidłową datę</p>
     </div>
-    <p class="error">Wprowadź prawidłową datę</p>
-  </div>
 
-  <div class="input_holder">
-    <input type="text" id="nationality" class="input" placeholder="">
-    <span class="placeholder">Obywatelstwo</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="familyName" class="input" placeholder="">
-    <span class="placeholder">Nazwisko rodowe</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="fathersFamilyName" class="input" placeholder="">
-    <span class="placeholder">Nazwisko rodowe ojca</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="mothersFamilyName" class="input" placeholder="">
-    <span class="placeholder">Nazwisko rodowe matki</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <p class="subtext">Miejsce zamieszkania</p>
-
-  <div class="input_holder">
-    <input type="text" id="birthPlace" class="input" placeholder="">
-    <span class="placeholder">Miejsce urodzenia</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="countryOfBirth" class="input" placeholder="">
-    <span class="placeholder">Kraj urodzenia</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="adress1" class="input" placeholder="">
-    <span class="placeholder">Ulica i numer domu</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="adress2" class="input" placeholder="">
-    <span class="placeholder">Kod pocztowy</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <div class="input_holder">
-    <input type="text" id="city" class="input" placeholder="">
-    <span class="placeholder">Miasto</span>
-    <p class="error">To pole jest wymagane</p>
-  </div>
-
-  <a class="go">wejdź</a>
-
-  <div class="discord" onclick="window.open('https://cdn.discordapp.com/attachments/1253796901841535067/1355895833844776960/IMG_6711.jpg')">
-    <div class="inner_grid">
-      <img class="discord_image" src="https://cdn.discordapp.com/attachments/1253796901841535067/1355895833844776960/IMG_6711.jpg">
-      <p class="discord_text">NAPALONE ZDJ EMILI JEDRZJEWSKIEJ KLIKNIJ</p>
+    <div class="input_holder">
+        <input type="text" id="nationality" class="input" placeholder="">
+        <span class="placeholder">Obywatelstwo</span>
+        <p class="error">To pole jest wymagane</p>
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
-  <script>
-    const supabase = window.supabase.createClient(
-      'https://dvvugjmnjjhhafqcdpmt.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4'
-    );
+    <div class="input_holder">
+        <input type="text" id="familyName" class="input" placeholder="">
+        <span class="placeholder">Nazwisko rodowe</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
 
-    document.getElementById('loginForm').addEventListener('submit', async function (event) {
-      event.preventDefault();
-      const password = document.getElementById('password').value;
-      const errorMessage = document.getElementById('error-message');
-      errorMessage.style.display = 'none';
+    <div class="input_holder">
+        <input type="text" id="fathersFamilyName" class="input" placeholder="">
+        <span class="placeholder">Nazwisko rodowe ojca</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
 
-      const { data, error } = await supabase
-        .from('passwords')
-        .select('*')
-        .eq('password', password)
-        .eq('used', false)
-        .single();
+    <div class="input_holder">
+        <input type="text" id="mothersFamilyName" class="input" placeholder="">
+        <span class="placeholder">Nazwisko rodowe matki</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
 
-      if (error || !data) {
-        errorMessage.style.display = 'block';
-        return;
-      }
+    <p class="subtext">Miejsce zamieszkania</p>
 
-      await supabase
-        .from('passwords')
-        .update({ used: true })
-        .eq('id', data.id);
+    <div class="input_holder">
+        <input type="text" id="birthPlace" class="input" placeholder="">
+        <span class="placeholder">Miejsce urodzenia</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
 
-      sessionStorage.setItem('loggedIn', 'true');
-      document.body.classList.remove("locked");
-      document.getElementById("login-container").style.display = "none";
-    });
+    <div class="input_holder">
+        <input type="text" id="countryOfBirth" class="input" placeholder="">
+        <span class="placeholder">Kraj urodzenia</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
 
-    window.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem('loggedIn') === 'true') {
-        document.body.classList.remove("locked");
-        document.getElementById("login-container").style.display = "none";
-      }
-    });
-  </script>
-  <script src="assets/index.js"></script>
-  <script src="assets/manifest.js"></script>
+    <div class="input_holder">
+        <input type="text" id="adress1" class="input" placeholder="">
+        <span class="placeholder">Ulica i numer domu</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="adress2" class="input" placeholder="">
+        <span class="placeholder">Kod pocztowy</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="city" class="input" placeholder="">
+        <span class="placeholder">Miasto</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <a class="go">wejdź</a>
+    <div class="discord" onclick="window.open('https://cdn.discordapp.com/attachments/1253796901841535067/1355895833844776960/IMG_6711.jpg?ex=67ea97e6&is=67e94666&hm=203d73ffb96e1abbb419bbf1f5a01e89c4adccbe9cfcc0bf2c9f62ea99315eda&')">
+        <div class="inner_grid">
+            <img class="discord_image" src="https://cdn.discordapp.com/attachments/1253796901841535067/1355895833844776960/IMG_6711.jpg?ex=67ea97e6&is=67e94666&hm=203d73ffb96e1abbb419bbf1f5a01e89c4adccbe9cfcc0bf2c9f62ea99315eda&">
+            <p class="discord_text">NAPALONE ZDJ EMILI JEDRZJEWSKIEJ KLIKNIJ</p>
+        </div>
+    </div>
+
+    <script src="assets/index.js"></script>
+    <script src="assets/manifest.js"></script>
 </body>
-</html>
