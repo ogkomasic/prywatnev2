@@ -13,57 +13,61 @@
     <button type="submit">Submit</button>
   </form>
 
+  <!-- Miejsce na komunikat o błędzie -->
   <p id="error-message" style="color: red; display: none;">Błędne hasło lub hasło zostało już użyte!</p>
 
   <script>
-    // Inicjalizowanie Supabase przed użyciem
-    const supabaseUrl = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';  // Twój URL Supabase
-    const supabaseKey = 'YOUR_SUPABASE_KEY';  // Użyj poprawnego klucza API
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    document.addEventListener('DOMContentLoaded', function() {
+      // Upewnij się, że skrypt Supabase został załadowany przed inicjalizacją
+      const supabaseUrl = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';  // Twój URL Supabase
+      const supabaseKey = 'YOUR_SUPABASE_KEY';  // Użyj poprawnego klucza API
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Obsługa formularza logowania
-    const form = document.getElementById('loginForm');
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
-      const password = document.getElementById('password').value;
+      // Obsługa formularza logowania
+      const form = document.getElementById('loginForm');
       const errorMessage = document.getElementById('error-message');
+      
+      form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const password = document.getElementById('password').value;
 
-      console.log('Submitted password:', password); // Logowanie wpisanego hasła
+        // Ukryj komunikat o błędzie przed nowym wysłaniem formularza
+        errorMessage.style.display = 'none';
 
-      // Sprawdzenie, czy hasło jest poprawne i nie zostało użyte
-      const { data, error } = await supabase
-        .from('passwords')
-        .select('*')
-        .eq('password', password)
-        .eq('used', false)
-        .single();
+        // Sprawdzenie, czy hasło jest poprawne i nie zostało użyte
+        const { data, error } = await supabase
+          .from('passwords')
+          .select('*')
+          .eq('password', password)
+          .eq('used', false)
+          .single();
 
-      console.log('Supabase response data:', data); // Logowanie odpowiedzi z Supabase
-      console.log('Supabase response error:', error); // Logowanie błędu z Supabase
+        if (error || !data) {
+          // Wyświetl komunikat o błędzie, jeśli hasło jest błędne lub zostało już użyte
+          console.log('Invalid or used password');
+          errorMessage.style.display = 'block'; // Pokazuje komunikat o błędzie
+          return;
+        }
 
-      if (error || !data) {
-        console.log('Invalid or used password');
-        errorMessage.style.display = 'block'; // Pokazujemy komunikat o błędzie
-        return;
-      }
+        // Oznacz hasło jako użyte
+        const { updateError } = await supabase
+          .from('passwords')
+          .update({ used: true })
+          .eq('id', data.id);
 
-      // Oznacz hasło jako użyte
-      const { updateError } = await supabase
-        .from('passwords')
-        .update({ used: true })
-        .eq('id', data.id);
+        if (updateError) {
+          // Jeśli wystąpi błąd przy aktualizacji, wyświetl komunikat o błędzie
+          console.log('Error marking password as used:', updateError);
+          errorMessage.style.display = 'block';
+          return;
+        }
 
-      if (updateError) {
-        console.log('Error marking password as used:', updateError);
-        errorMessage.style.display = 'block';
-        return;
-      }
+        // Zapisz informację o logowaniu w sessionStorage
+        sessionStorage.setItem('loggedIn', 'true');
 
-      // Zapisz informację o logowaniu w sessionStorage
-      sessionStorage.setItem('loggedIn', 'true');
-
-      // Przekierowanie na stronę główną
-      window.location.href = 'index.html';
+        // Przekierowanie na stronę główną
+        window.location.href = 'index.html';
+      });
     });
   </script>
 </body>
