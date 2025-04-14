@@ -6,101 +6,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
 
     <!-- Sprawdzanie, czy użytkownik jest zalogowany -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Sprawdzamy, czy użytkownik jest zalogowany
-            if (!sessionStorage.getItem('loggedIn')) {
-                // Jeśli nie jest, wyświetlamy modal z formularzem logowania
-                document.getElementById('loginModal').style.display = 'block';
-            }
-        });
+     <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sprawdzamy, czy użytkownik jest zalogowany
+      if (!sessionStorage.getItem('loggedIn')) {
+        // Jeśli nie jest, wyświetlamy modal z formularzem logowania
+        document.getElementById('loginModal').style.display = 'block';
+      }
+    });
 
-        function checkPassword() {
-            var enteredPassword = document.getElementById('passwordInput').value;
+    function checkPassword() {
+      var enteredPassword = document.getElementById('passwordInput').value;
 
-            // Sprawdzamy hasło (można je zastąpić dynamicznie lub z bazy danych)
-            var correctPassword = "tajnehaslo"; // Zmień to na swoje rzeczywiste hasło
+      // Sprawdzamy hasło w bazie Supabase
+      var supabasePassword = "tajnehaslo"; // Zmień na odpowiednie hasło z bazy lub weryfikację w Supabase
 
-            if (enteredPassword === correctPassword) {
-                // Jeśli hasło jest poprawne, zapisujemy stan zalogowania
-                sessionStorage.setItem('loggedIn', 'true');
-                // Ukrywamy modal
-                document.getElementById('loginModal').style.display = 'none';
-            } else {
-                alert('Niepoprawne hasło! Spróbuj ponownie.');
-            }
-        }
-    </script>
-
+      if (enteredPassword === supabasePassword) {
+        // Jeśli hasło jest poprawne, zapisujemy stan zalogowania
+        sessionStorage.setItem('loggedIn', 'true');
+        // Ukrywamy modal
+        document.getElementById('loginModal').style.display = 'none';
+      } else {
+        alert('Niepoprawne hasło! Spróbuj ponownie.');
+      }
+    }
+  </script>
 </head>
+
 <body>
-    <!-- Modal z formularzem logowania -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
-            <h2>Proszę wpisać hasło, aby kontynuować:</h2>
-            <input type="password" id="passwordInput" placeholder="Wpisz hasło">
-            <button onclick="checkPassword()">Zaloguj</button>
-        </div>
+  <!-- Modal z formularzem logowania -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
+      <h2>Proszę wpisać hasło, aby kontynuować:</h2>
+      <input type="password" id="passwordInput" placeholder="Wpisz hasło">
+      <button onclick="checkPassword()">Zaloguj</button>
     </div>
+  </div>
 
-    <style>
-        /* Styl dla modala */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4);
-        }
+  <!-- Style dla modala -->
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0); 
+      background-color: rgba(0,0,0,0.4);
+    }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-        }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+    }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
-        input {
-            padding: 10px;
-            width: 80%;
-            margin-bottom: 20px;
-        }
+    input {
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 20px;
+    }
 
-        button {
-            padding: 10px;
-            width: 50%;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    button {
+      padding: 10px;
+      width: 50%;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
     
 <body>
     <!-- Reszta Twojego kodu HTML -->
