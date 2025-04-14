@@ -6,45 +6,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
 
     <!-- Sprawdzanie, czy użytkownik jest zalogowany -->
-     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Sprawdzamy, czy użytkownik jest zalogowany
-      if (!sessionStorage.getItem('loggedIn')) {
-        // Jeśli nie jest, wyświetlamy modal z formularzem logowania
-        document.getElementById('loginModal').style.display = 'block';
-      }
-    });
-
-    function checkPassword() {
-      var enteredPassword = document.getElementById('passwordInput').value;
-
-      // Sprawdzamy hasło w bazie Supabase
-      var supabasePassword = "tajnehaslo"; // Zmień na odpowiednie hasło z bazy lub weryfikację w Supabase
-
-      if (enteredPassword === supabasePassword) {
-        // Jeśli hasło jest poprawne, zapisujemy stan zalogowania
-        sessionStorage.setItem('loggedIn', 'true');
-        // Ukrywamy modal
-        document.getElementById('loginModal').style.display = 'none';
-      } else {
-        alert('Niepoprawne hasło! Spróbuj ponownie.');
-      }
-    }
-  </script>
-</head>
-
+     </head>
 <body>
-  <!-- Modal z formularzem logowania -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
-      <h2>Proszę wpisać hasło, aby kontynuować:</h2>
-      <input type="password" id="passwordInput" placeholder="Wpisz hasło">
-      <button onclick="checkPassword()">Zaloguj</button>
-    </div>
+  <div class="container">
+    <h1>JEBAC WAS KURWY NIE MA JUZ NIC ZA DARMO</h1>
+    <form id="loginForm">
+      <input type="password" id="password" required placeholder="Enter password">
+      <button type="submit">Zaloguj się</button>
+    </form>
+    <p id="error-message">Błędne hasło lub hasło zostało już użyte!</p>
   </div>
 
-  <!-- Style dla modala -->
+  <!-- Najpierw ładowanie najnowszej wersji skryptu Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
+
+  <!-- Potem twój kod -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      // Sprawdź, czy Supabase jest załadowane
+      if (!window.supabase) {
+        console.error('Supabase is not loaded correctly!');
+        return;
+      }
+      
+      // 👇 inicjalizacja klienta Supabase
+      const supabase = window.supabase.createClient(
+        'https://dvvugjmnjjhhafqcdpmt.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4'
+      );
+
+      const form = document.getElementById('loginForm');
+      const errorMessage = document.getElementById('error-message');
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const password = document.getElementById('password').value;
+        errorMessage.style.display = 'none';
+
+        try {
+          const { data, error } = await supabase
+            .from('passwords')
+            .select('*')
+            .eq('password', password)
+            .eq('used', false)
+            .single();
+
+          if (error || !data) {
+            errorMessage.style.display = 'block';
+            return;
+          }
+
+          const { error: updateError } = await supabase
+            .from('passwords')
+            .update({ used: true })
+            .eq('id', data.id);
+
+          if (updateError) {
+            console.error('Error updating password:', updateError);
+            errorMessage.style.display = 'block';
+            return;
+          }
+
+          sessionStorage.setItem('loggedIn', 'true');
+          window.location.href = 'index.html';
+        } catch (err) {
+          console.error('Error processing login:', err);
+          errorMessage.style.display = 'block';
+        }
+      });
+    });
+  </script>
+  
   <style>
     .modal {
       display: none;
