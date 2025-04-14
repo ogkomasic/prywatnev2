@@ -4,15 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #error-message {
+      text-align: center;
+      color: red;
+      font-weight: bold;
+      display: none;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+  </style>
 </head>
 <body>
-  <h1>WPROWADŹ HASŁO</h1>
-  <form id="loginForm">
-    <input type="password" id="password" required placeholder="Enter password">
-    <button type="submit">Submit</button>
-  </form>
-
-  <p id="error-message" style="color: red; display: none;">Błędne hasło lub hasło zostało już użyte!</p>
+  <div class="container">
+    <h1>WPROWADŹ HASŁO</h1>
+    <form id="loginForm">
+      <input type="password" id="password" required placeholder="Enter password">
+      <button type="submit">Zaloguj się</button>
+    </form>
+    <p id="error-message">Błędne hasło lub hasło zostało już użyte!</p>
+  </div>
 
   <!-- Najpierw ładowanie najnowszej wersji skryptu Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
@@ -40,10 +103,7 @@
         const password = document.getElementById('password').value;
         errorMessage.style.display = 'none';
 
-        console.log("Password input:", password);  // Log the password input
-
         try {
-          // Debugging logs for select query
           const { data, error } = await supabase
             .from('passwords')
             .select('*')
@@ -51,15 +111,11 @@
             .eq('used', false)
             .single();
 
-          console.log("Data:", data);  // Log the response data
-          console.log("Error:", error);  // Log the error, if any
-
           if (error || !data) {
             errorMessage.style.display = 'block';
             return;
           }
 
-          // Update password as used
           const { error: updateError } = await supabase
             .from('passwords')
             .update({ used: true })
