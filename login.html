@@ -1,0 +1,27 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<div id="login-box">
+  <input type="password" id="passwordInput" placeholder="Wpisz hasło" />
+  <button onclick="checkPassword()">Zaloguj</button>
+  <p id="message"></p>
+</div>
+
+<div id="content" style="display:none;">
+  <!-- tutaj twoja tajna strona -->
+  <h1>Witaj w prywatnej części 🎉</h1>
+</div>
+<script>
+  const supabase = supabase.createClient("https://YOUR_PROJECT.supabase.co", "PUBLIC_ANON_KEY");
+
+  async function checkPassword() {
+    const pw = document.getElementById("passwordInput").value;
+
+    const { data, error } = await supabase.rpc('check_password', { pw });
+
+    if (data === true) {
+      document.getElementById("login-box").style.display = "none";
+      document.getElementById("content").style.display = "block";
+    } else {
+      document.getElementById("message").innerText = "Błędne lub zużyte hasło!";
+    }
+  }
+</script>
