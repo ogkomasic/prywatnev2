@@ -4,81 +4,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
 </head>
 <body>
-  <h1>WPROWADZ HASLO</h1>
+  <h1>WPROWADŹ HASŁO</h1>
   <form id="loginForm">
     <input type="password" id="password" required placeholder="Enter password">
     <button type="submit">Submit</button>
   </form>
 
- 
   <p id="error-message" style="color: red; display: none;">Błędne hasło lub hasło zostało już użyte!</p>
 
+  <!-- Najpierw ładowanie biblioteki Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Potem twój kod -->
   <script>
-    
-    document.addEventListener("DOMContentLoaded", function () {
-      
-      if (typeof supabase === 'undefined') {
-        console.error('Supabase script not loaded correctly.');
-        return;
-      }
+    document.addEventListener("DOMContentLoaded", async function () {
+      // 👇 ważne: odwołujemy się do window.supabase
+      const supabase = window.supabase.createClient(
+        'https://dvvugjmnjjhhafqcdpmt.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4'
+      );
 
-      
-      const supabaseUrl = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';  
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';  
-      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-      // Obsługa formularza logowania
       const form = document.getElementById('loginForm');
       const errorMessage = document.getElementById('error-message');
 
       form.addEventListener('submit', async function (event) {
         event.preventDefault();
         const password = document.getElementById('password').value;
-
-        
         errorMessage.style.display = 'none';
 
-        try {
-          
-          const { data, error } = await supabase
-            .from('passwords')
-            .select('*')
-            .eq('password', password)
-            .eq('used', false)
-            .single();
+        const { data, error } = await supabase
+          .from('passwords')
+          .select('*')
+          .eq('password', password)
+          .eq('used', false)
+          .single();
 
-          if (error || !data) {
-            
-            errorMessage.style.display = 'block'; 
-            return;
-          }
-
-          
-          const { updateError } = await supabase
-            .from('passwords')
-            .update({ used: true })
-            .eq('id', data.id);
-
-          if (updateError) {
-            console.error('Error marking password as used:', updateError);
-            errorMessage.style.display = 'block';
-            return;
-          }
-
-      
-          sessionStorage.setItem('loggedIn', 'true');
-
-          
-          window.location.href = 'index.html';
-
-        } catch (error) {
-          console.error('Error processing login:', error);
+        if (error || !data) {
           errorMessage.style.display = 'block';
+          return;
         }
+
+        const { error: updateError } = await supabase
+          .from('passwords')
+          .update({ used: true })
+          .eq('id', data.id);
+
+        if (updateError) {
+          console.error('Error updating password:', updateError);
+          errorMessage.style.display = 'block';
+          return;
+        }
+
+        sessionStorage.setItem('loggedIn', 'true');
+        window.location.href = 'index.html';
       });
     });
   </script>
