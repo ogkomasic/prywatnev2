@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="pl">
 <head>
     <title>mObywatel</title>
     <meta charset="UTF-8">
@@ -12,12 +14,12 @@
 </head>
 <body>
 
-    <div class="error">
+    <div class="error" id="error">
         <div class="opacity close"></div>
         <div class="error_box">
             <p class="error_title">Coś poszło nie tak...</p>
-            <p class="error_description">Wygląda na to, że wystąpił bład, spróbuj ponownie później.</p>
-            <p class="error_button close">Rozumiem</p>
+            <p class="error_description">Wygląda na to, że wystąpił błąd, spróbuj ponownie później.</p>
+            <p class="error_button close" onclick="document.getElementById('error').style.display = 'none';">Rozumiem</p>
         </div>
     </div>
 
@@ -46,30 +48,74 @@
         </div>
     </div>
 
-    <div class="container">
-        <p class="main_title">Kod QR</p>
-        <p class="description">Wybierz, co chcesz zrobić</p>
-        <div class="action_grid">
-            <div class="action">
-                <img class="action_image" src="https://i.imgur.com/VCThE9p.png">
-                <div class="action_text">
-                    <p class="action_title">Zeskanuj kod QR</p>
-                    <p class="action_subtitle">Zaloguj się lub potwierdź swoje dane.</p>
-                </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
-            </div>
-            <div class="action">
-                <img class="action_image" src="https://i.imgur.com/SdPmeGM.png">
-                <div class="action_text">
-                    <p class="action_title">Pokaż kod QR</p>
-                    <p class="action_subtitle">Sprawdź dokument innej osoby.</p>
-                </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
-            </div>
-        </div>
+    <div class="container" id="qr-container">
+        <!-- Tu dynamicznie wstawiamy QR i kod -->
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function generateRandomCode() {
+            return Math.floor(100000 + Math.random() * 900000);
+        }
+
+        function startCountdown(duration, display) {
+            let timer = duration, minutes, seconds;
+            let interval = setInterval(function () {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
+                display.textContent = "Kod wygaśnie za: " + minutes + " min " + seconds + " sek.";
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    document.getElementById("error").style.display = "block";
+                }
+            }, 1000);
+        }
+
+        function generateQRContent() {
+            const container = document.getElementById("qr-container");
+            container.innerHTML = ""; // czyść
+
+            const title = document.createElement("p");
+            title.className = "main_title";
+            title.textContent = "Pokaż kod QR osobie, której dokument sprawdzasz";
+
+            const desc = document.createElement("p");
+            desc.className = "description";
+            desc.textContent = "Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie";
+
+            const qrDiv = document.createElement("div");
+            qrDiv.id = "qrcode";
+            qrDiv.style.margin = "20px auto";
+            qrDiv.style.width = "180px";
+            qrDiv.style.height = "180px";
+
+            const codeText = document.createElement("p");
+            codeText.className = "code_number";
+            const code = generateRandomCode();
+            codeText.textContent = code;
+
+            const countdown = document.createElement("p");
+            countdown.className = "countdown";
+
+            container.appendChild(title);
+            container.appendChild(desc);
+            container.appendChild(qrDiv);
+            container.appendChild(codeText);
+            container.appendChild(countdown);
+
+            const qr = new QRCode(qrDiv, {
+                text: code.toString(),
+                width: 180,
+                height: 180
+            });
+
+            startCountdown(180, countdown);
+        }
+
+        window.onload = generateQRContent;
+    </script>
+
     <script src="assets/bar.js"></script>
-    <script src="assets/qr.js"></script>
     <script src="assets/manifest.js"></script>
 </body>
+</html>
