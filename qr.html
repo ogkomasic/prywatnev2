@@ -1,109 +1,36 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <title>mObywatel</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="assets/qr.css">
-    <link rel="stylesheet" href="assets/main.css">
-    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="apple-touch-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="shortcut icon" href="https://i.imgur.com/n4zJhma.png">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
+  <meta charset="UTF-8">
+  <title>mObywatel</title>
+  <link rel="stylesheet" href="assets/main.css">
+  <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-    <!-- Błąd -->
-    <div class="error" style="display: none;">
-        <div class="opacity close"></div>
-        <div class="error_box">
-            <p class="error_title">Coś poszło nie tak...</p>
-            <p class="error_description">Wygląda na to, że wystąpił błąd, spróbuj ponownie później.</p>
-            <p class="error_button close" onclick="document.querySelector('.error').style.display = 'none';">Rozumiem</p>
+  <div class="container">
+    <p class="main_title">Kod QR</p>
+    <p class="description">Wybierz, co chcesz zrobić</p>
+    <div class="action_grid">
+      <div class="action" onclick="alert('Opcja jeszcze nieaktywna')">
+        <img class="action_image" src="https://i.imgur.com/VCThE9p.png">
+        <div class="action_text">
+          <p class="action_title">Zeskanuj kod QR</p>
+          <p class="action_subtitle">Zaloguj się lub potwierdź swoje dane.</p>
         </div>
+        <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
+      </div>
+      <div class="action" onclick="location.href='qr-code.html'">
+        <img class="action_image" src="https://i.imgur.com/SdPmeGM.png">
+        <div class="action_text">
+          <p class="action_title">Pokaż kod QR</p>
+          <p class="action_subtitle">Sprawdź dokument innej osoby.</p>
+        </div>
+        <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
+      </div>
     </div>
+  </div>
 
-    <!-- Pasek dolny -->
-    <div class="bottom_bar">
-        <div class="bottom_bar_grid">
-            <div class="bottom_element_grid" send="home">
-                <div class="bottom_element_image home"></div>
-                <p class="bottom_element_text">Pulpit</p>
-            </div>
-            <div class="bottom_element_grid" send="documents">
-                <div class="bottom_element_image documents"></div>
-                <p class="bottom_element_text">Dokumenty</p>
-            </div>
-            <div class="bottom_element_grid" send="services">
-                <div class="bottom_element_image services"></div>
-                <p class="bottom_element_text">Usługi</p>
-            </div>
-            <div class="bottom_element_grid" send="qr">
-                <div class="bottom_element_image qr qr_open"></div>
-                <p class="bottom_element_text open">Kod QR</p>
-            </div>
-            <div class="bottom_element_grid" send="more">
-                <div class="bottom_element_image more"></div>
-                <p class="bottom_element_text">Więcej</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Główna zawartość -->
-    <div class="container">
-        <p class="main_title">Kod QR</p>
-        <p class="description">Wybierz, co chcesz zrobić</p>
-        <div class="action_grid">
-            <div class="action">
-                <img class="action_image" src="https://i.imgur.com/VCThE9p.png">
-                <div class="action_text">
-                    <p class="action_title">Zeskanuj kod QR</p>
-                    <p class="action_subtitle">Zaloguj się lub potwierdź swoje dane.</p>
-                </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
-            </div>
-            <div class="action" onclick="pokazKodQR()">
-                <img class="action_image" src="https://i.imgur.com/SdPmeGM.png">
-                <div class="action_text">
-                    <p class="action_title">Pokaż kod QR</p>
-                    <p class="action_subtitle">Sprawdź dokument innej osoby.</p>
-                </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
-            </div>
-        </div>
-
-        <div id="qrBox" style="display: none; text-align: center; margin-top: 20px;">
-            <div id="code" style="font-size: 28px; font-weight: bold; margin-bottom: 10px;"></div>
-            <img id="qrImage" src="" alt="Kod QR" style="width: 180px; height: 180px;" />
-        </div>
-    </div>
-
-    <script src="assets/bar.js"></script>
-    <script src="assets/manifest.js"></script>
-
-    <!-- Skrypt do generowania kodu i błędu -->
-    <script>
-        function pokazKodQR() {
-            const qrBox = document.getElementById("qrBox");
-            const codeElement = document.getElementById("code");
-            const qrImage = document.getElementById("qrImage");
-
-            // Losowy 6-cyfrowy kod
-            const code = Math.floor(100000 + Math.random() * 900000).toString();
-            codeElement.textContent = code;
-
-            // QR z użyciem api.qrserver.com
-            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${code}`;
-
-            // Pokaż kod i QR
-            qrBox.style.display = "block";
-
-            // Po 5 sek. pokaż błąd
-            setTimeout(() => {
-                document.querySelector(".error").style.display = "block";
-            }, 5000);
-        }
-    </script>
 </body>
 </html>
