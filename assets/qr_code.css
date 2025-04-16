@@ -1,0 +1,115 @@
+/* Główne style */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.main_title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #0068B5;
+}
+
+.description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    padding: 0 20px;
+    line-height: 1.5;
+}
+
+/* Stylizacja kodu QR */
+.qr-code-container {
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 280px;
+}
+
+.qr-code-container img {
+    width: 100%;
+    height: auto;
+}
+
+/* Stylizacja kodu numerycznego */
+.code-display {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #0068B5;
+    margin: 20px 0;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.timer {
+    font-size: 16px;
+    color: #d32f2f;
+    margin-bottom: 30px;
+}
+
+/* Dolny pasek nawigacyjny */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.nav-item.active {
+    color: #0068B5;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Ikony dla nawigacji (możesz zastąpić własnymi) */
+.nav-icon.documents {
+    background-image: url('https://i.imgur.com/VCThE9p.png');
+}
+
+.nav-icon.services {
+    background-image: url('https://i.imgur.com/SdPmeGM.png');
+}
+
+.nav-icon.qr {
+    background-image: url('https://i.imgur.com/n4zJhma.png');
+}
+
+.nav-icon.more {
+    background-image: url('https://i.imgur.com/x27OY3D.png');
+}
