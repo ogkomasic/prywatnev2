@@ -22,35 +22,28 @@
         </div>
     </div>
 
-    <!-- Pasek nawigacyjny zgodny z Twoim bar.js -->
-    <div class="bottom_bar">
-        <div class="bottom_bar_grid">
-            <div class="bottom_element_grid" send="desktop">
-                <div class="bottom_element_image home"></div>
-                <p class="bottom_element_text">Pulpit</p>
-            </div>
-            <div class="bottom_element_grid" send="documents">
-                <div class="bottom_element_image documents"></div>
-                <p class="bottom_element_text">Dokumenty</p>
-            </div>
-            <div class="bottom_element_grid" send="services">
-                <div class="bottom_element_image services"></div>
-                <p class="bottom_element_text">Usługi</p>
-            </div>
-            <div class="bottom_element_grid" send="qr">
-                <div class="bottom_element_image qr qr_open"></div>
-                <p class="bottom_element_text open">Kod QR</p>
-            </div>
-            <div class="bottom_element_grid" send="more">
-                <div class="bottom_element_image more"></div>
-                <p class="bottom_element_text">Więcej</p>
-            </div>
-        </div>
-    </div>
+    <!-- Pasek nawigacyjny -->
+    <nav class="bottom-nav">
+        <a href="desktop.html" class="nav-item">
+            <span class="nav-text">Pulpit</span>
+        </a>
+        <a href="documents.html" class="nav-item">
+            <span class="nav-text">Dokumenty</span>
+        </a>
+        <a href="services.html" class="nav-item">
+            <span class="nav-text">Usługi</span>
+        </a>
+        <a href="qr.html" class="nav-item active">
+            <span class="nav-text">Kod QR</span>
+        </a>
+        <a href="more.html" class="nav-item">
+            <span class="nav-text">Więcej</span>
+        </a>
+    </nav>
 
     <script>
-        // Timer i generowanie QR
         document.addEventListener('DOMContentLoaded', function() {
+            // Generowanie kodu QR
             new QRCode(document.getElementById("qrcode"), {
                 text: "656736",
                 width: 160,
@@ -60,6 +53,7 @@
                 correctLevel: QRCode.CorrectLevel.H
             });
 
+            // Timer odliczający czas (3 minuty)
             let timeLeft = 180;
             const timerElement = document.getElementById('timer');
             
@@ -78,6 +72,16 @@
             
             const timer = setInterval(updateTimer, 1000);
             updateTimer();
+
+            // Obsługa kliknięć w pasek nawigacyjny
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-item').forEach(nav => {
+                        nav.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
         });
     </script>
 
