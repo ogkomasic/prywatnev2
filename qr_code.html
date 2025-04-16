@@ -7,35 +7,59 @@
     <link rel="stylesheet" href="assets/qr_code.css">
     <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        /* Tymczasowe style wbudowane dla pewności */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+        .container {
+            max-width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #qrcode {
+            margin: 20px auto;
+            display: inline-block;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
-        <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
+    <div class="container">
+        <div class="header">
+            <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
+            <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
+        </div>
+
+        <div class="qr-section">
+            <div id="qrcode"></div>
+            <div class="numeric-code">656736</div>
+            <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <nav class="bottom-nav">
+            <div class="nav-item">Dokumenty</div>
+            <div class="nav-item">Usługi</div>
+            <div class="nav-item active">Kod QR</div>
+            <div class="nav-item">Więcej</div>
+        </nav>
     </div>
-
-    <div class="qr-container">
-        <div id="qrcode"></div>
-        <div class="numeric-code">656736</div>
-        <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
-    </div>
-
-    <div class="divider"></div>
-
-    <nav class="bottom-nav">
-        <div class="nav-item">Dokumenty</div>
-        <div class="nav-item">Usługi</div>
-        <div class="nav-item active">Kod QR</div>
-        <div class="nav-item">Więcej</div>
-    </nav>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Generowanie kodu QR
             new QRCode(document.getElementById("qrcode"), {
                 text: "656736",
-                width: 160,  // Zmniejszony rozmiar
-                height: 160, // Zmniejszony rozmiar
+                width: 160,
+                height: 160,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
