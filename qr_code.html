@@ -5,37 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="assets/qr_code.css">
+    <link rel="stylesheet" href="assets/main.css"> <!-- <- Jeśli masz ten plik CSS -->
     <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <!-- Przycisk WRÓĆ -->
-        <button class="back-button" onclick="window.history.back()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 18L9 12L15 6" stroke="#0068B5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            WRÓĆ
-        </button>
-
-        <!-- Nagłówek -->
-        <div class="qr-header">
-            <h1>Kod QR</h1>
+        <div class="header">
+            <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
+            <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
         </div>
 
-        <!-- Zawartość główna -->
-        <div class="content">
-            <p class="instruction">Pokaż kod QR osobie, której dokument sprawdzasz</p>
-            <p class="subinstruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
-            
+        <div class="qr-section">
             <div id="qrcode"></div>
-            
-            <div class="numeric-code">656736</div>
+            <div class="numeric-code" id="code-display">------</div>
             <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
         </div>
     </div>
 
-    <!-- Pasek nawigacyjny -->
+    <!-- Pasek zgodny z bar.js -->
     <div class="bottom_bar">
         <div class="bottom_bar_grid">
             <div class="bottom_element_grid" send="home">
@@ -62,26 +50,31 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Generowanie kodu QR
+        document.addEventListener('DOMContentLoaded', function () {
+            function generateRandomCode() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+
+            const code = generateRandomCode();
+            document.getElementById("code-display").textContent = code;
+
             new QRCode(document.getElementById("qrcode"), {
-                text: "656736",
-                width: 200,
-                height: 200,
+                text: code,
+                width: 160,
+                height: 160,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
 
-            // Timer odliczający czas
             let timeLeft = 180;
             const timerElement = document.getElementById('timer');
-            
+
             const updateTimer = () => {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
                 timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
-                
+
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     timerElement.textContent = "0 min 00 sek.";
@@ -89,13 +82,15 @@
                 }
                 timeLeft--;
             };
-            
+
             const timer = setInterval(updateTimer, 1000);
             updateTimer();
         });
     </script>
 
-    <!-- Skrypty do paska dolnego (bar.js) -->
+    <!-- Skrypty -->
     <script src="assets/bar.js"></script>
+    <script src="assets/qr.js"></script>
+    <script src="assets/manifest.js"></script>
 </body>
 </html>
