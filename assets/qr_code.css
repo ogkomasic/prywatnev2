@@ -1,115 +1,104 @@
-/* Główne style */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #f8f8f8;
+/* Reset i podstawowe style */
+* {
     margin: 0;
     padding: 0;
-    color: #333;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-.container {
+body {
+    background-color: #f8f8f8;
+    color: #000;
     max-width: 100%;
-    padding: 20px;
+    overflow-x: hidden;
+    padding-bottom: 60px;
+}
+
+/* Nagłówek */
+.header {
+    padding: 20px 16px 10px;
     text-align: center;
 }
 
-.main_title {
-    font-size: 24px;
+.header h1 {
+    font-size: 22px;
     font-weight: 600;
-    margin-bottom: 30px;
-    color: #0068B5;
+    margin-bottom: 8px;
+    color: #000;
 }
 
-.description {
+.instruction {
     font-size: 16px;
     color: #666;
-    margin-bottom: 30px;
-    padding: 0 20px;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
-/* Stylizacja kodu QR */
-.qr-code-container {
-    margin: 0 auto 30px;
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 280px;
+/* Sekcja z kodem QR */
+.qr-section {
+    margin: 25px auto;
+    text-align: center;
 }
 
-.qr-code-container img {
-    width: 100%;
-    height: auto;
+.qr-code-placeholder {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 15px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Stylizacja kodu numerycznego */
-.code-display {
+.numeric-code {
     font-size: 28px;
     font-weight: 600;
     letter-spacing: 2px;
-    color: #0068B5;
-    margin: 20px 0;
-    padding: 10px;
-    background: white;
-    border-radius: 8px;
-    display: inline-block;
+    margin: 10px 0;
+    color: #000;
 }
 
-.timer {
+.expiry-timer {
     font-size: 16px;
     color: #d32f2f;
-    margin-bottom: 30px;
+    margin-top: 5px;
 }
 
-/* Dolny pasek nawigacyjny */
+/* Linia podziału */
+.divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 20px 16px;
+}
+
+/* Dolna nawigacja */
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: white;
-    border-top: 1px solid #e0e0e0;
-    padding: 10px 0;
     display: flex;
     justify-content: space-around;
+    background-color: #fff;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 0;
 }
 
 .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #666;
     font-size: 12px;
-    text-decoration: none;
+    color: #666;
+    padding: 5px 10px;
 }
 
 .nav-item.active {
     color: #0068B5;
+    font-weight: 500;
 }
 
-.nav-icon {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 5px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-/* Ikony dla nawigacji (możesz zastąpić własnymi) */
-.nav-icon.documents {
-    background-image: url('https://i.imgur.com/VCThE9p.png');
-}
-
-.nav-icon.services {
-    background-image: url('https://i.imgur.com/SdPmeGM.png');
-}
-
-.nav-icon.qr {
-    background-image: url('https://i.imgur.com/n4zJhma.png');
-}
-
-.nav-icon.more {
-    background-image: url('https://i.imgur.com/x27OY3D.png');
+.nav-label {
+    margin-top: 5px;
 }
