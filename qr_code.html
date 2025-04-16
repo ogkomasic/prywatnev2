@@ -6,49 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="assets/qr_code.css">
     <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
         <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
-        
-        <div id="qrcode"></div>
-        
-        <div class="numeric-code">656736</div>
-        <div class="expiry-timer">Kod wygaśnie za <span id="timer">2 min 35 sek.</span></div>
     </div>
 
-    <script>
-        // Generowanie kodu QR
-        new QRCode(document.getElementById("qrcode"), {
-            text: "656736",
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
+    <div class="qr-section">
+        <div class="qr-code-placeholder"></div>
+        <div class="numeric-code">656736</div>
+        <div class="expiry-timer">Kod wygaśnie za 3 min 0 sek.</div>
+    </div>
 
+    <div class="divider"></div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item">
+            <span class="nav-label">Dokumenty</span>
+        </div>
+        <div class="nav-item">
+            <span class="nav-label">Usługi</span>
+        </div>
+        <div class="nav-item active">
+            <span class="nav-label">Kod QR</span>
+        </div>
+        <div class="nav-item">
+            <span class="nav-label">Więcej</span>
+        </div>
+    </nav>
+
+    <script>
         // Timer odliczający czas
-        let timeLeft = 155; // 2 min 35 sek
-        const timerElement = document.getElementById('timer');
+        let timeLeft = 180; // 3 minuty
+        const timerElement = document.querySelector('.expiry-timer');
         
         const updateTimer = () => {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
+            timerElement.textContent = `Kod wygaśnie za ${minutes} min ${seconds} sek.`;
             
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                timerElement.textContent = "0 min 00 sek.";
-                timerElement.parentElement.textContent = "Kod wygasł!";
+                timerElement.textContent = "Kod wygasł!";
             }
             timeLeft--;
         };
         
         const timer = setInterval(updateTimer, 1000);
-        updateTimer();
+        updateTimer(); // Wywołanie natychmiastowe
     </script>
 <script src="assets/bar.js"></script>
     <script src="assets/card.js?v=1.0"></script>
