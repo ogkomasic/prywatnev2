@@ -1,92 +1,78 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <title>mObywatel - Weryfikacja</title>
+    <title>mObywatel</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="assets/qr_code.css">
-    <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <link rel="stylesheet" href="assets/qr.css">
+    <link rel="stylesheet" href="assets/main.css">
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/n4zJhma.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/n4zJhma.png">
+    <link rel="shortcut icon" href="https://i.imgur.com/n4zJhma.png">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
-            <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
-        </div>
 
-        <div class="qr-section">
-            <div id="qrcode"></div>
-            <div class="numeric-code">656736</div>
-            <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
+    <div class="error">
+        <div class="opacity close"></div>
+        <div class="error_box">
+            <p class="error_title">Coś poszło nie tak...</p>
+            <p class="error_description">Wygląda na to, że wystąpił bład, spróbuj ponownie później.</p>
+            <p class="error_button close">Rozumiem</p>
         </div>
     </div>
 
-    <!-- Pasek nawigacyjny -->
-    <nav class="bottom-nav">
-        <a href="desktop.html" class="nav-item">
-            <span class="nav-text">Pulpit</span>
-        </a>
-        <a href="documents.html" class="nav-item">
-            <span class="nav-text">Dokumenty</span>
-        </a>
-        <a href="services.html" class="nav-item">
-            <span class="nav-text">Usługi</span>
-        </a>
-        <a href="qr.html" class="nav-item active">
-            <span class="nav-text">Kod QR</span>
-        </a>
-        <a href="more.html" class="nav-item">
-            <span class="nav-text">Więcej</span>
-        </a>
-    </nav>
+    <div class="bottom_bar">
+        <div class="bottom_bar_grid">
+            <div class="bottom_element_grid" send="home">
+                <div class="bottom_element_image home"></div>
+                <p class="bottom_element_text">Pulpit</p>
+            </div>
+            <div class="bottom_element_grid" send="documents">
+                <div class="bottom_element_image documents"></div>
+                <p class="bottom_element_text">Dokumenty</p>
+            </div>
+            <div class="bottom_element_grid" send="services">
+                <div class="bottom_element_image services"></div>
+                <p class="bottom_element_text">Usługi</p>
+            </div>
+            <div class="bottom_element_grid" send="qr">
+                <div class="bottom_element_image qr qr_open"></div>
+                <p class="bottom_element_text open">Kod QR</p>
+            </div>
+            <div class="bottom_element_grid" send="more">
+                <div class="bottom_element_image more"></div>
+                <p class="bottom_element_text">Więcej</p>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Generowanie kodu QR
-            new QRCode(document.getElementById("qrcode"), {
-                text: "656736",
-                width: 160,
-                height: 160,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-
-            // Timer odliczający czas (3 minuty)
-            let timeLeft = 180;
-            const timerElement = document.getElementById('timer');
-            
-            const updateTimer = () => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    timerElement.textContent = "0 min 00 sek.";
-                    timerElement.parentElement.textContent = "Kod wygasł!";
-                }
-                timeLeft--;
-            };
-            
-            const timer = setInterval(updateTimer, 1000);
-            updateTimer();
-
-            // Obsługa kliknięć w pasek nawigacyjny
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    document.querySelectorAll('.nav-item').forEach(nav => {
-                        nav.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
-        });
-    </script>
+    <div class="container">
+        <p class="main_title">Kod QR</p>
+        <p class="description">Wybierz, co chcesz zrobić</p>
+        <div class="action_grid">
+            <div class="action" id="scanQR">
+                <img class="action_image" src="https://i.imgur.com/VCThE9p.png">
+                <div class="action_text">
+                    <p class="action_title">Zeskanuj kod QR</p>
+                    <p class="action_subtitle">Zaloguj się lub potwierdź swoje dane.</p>
+                </div>
+                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
+            </div>
+            <div class="action" id="showQR">
+                <img class="action_image" src="https://i.imgur.com/SdPmeGM.png">
+                <div class="action_text">
+                    <p class="action_title">Pokaż kod QR</p>
+                    <p class="action_subtitle">Sprawdź dokument innej osoby.</p>
+                </div>
+                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
+            </div>
+        </div>
+    </div>
 
     <script src="assets/bar.js"></script>
-    <script src="assets/card.js?v=1.0"></script>
+    <script src="assets/qr.js"></script>
     <script src="assets/manifest.js"></script>
 </body>
 </html>
