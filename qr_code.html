@@ -14,46 +14,35 @@
         <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
     </div>
 
-    <div class="qr-section">
+    <div class="qr-container">
         <div id="qrcode"></div>
         <div class="numeric-code">656736</div>
-        <div class="expiry-timer">Kod wygaśnie za: <span id="timer">2 min 33 sek.</span></div>
+        <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
     </div>
 
     <div class="divider"></div>
 
     <nav class="bottom-nav">
-        <div class="nav-item">
-            <span class="nav-label">Dokumenty</span>
-        </div>
-        <div class="nav-item">
-            <span class="nav-label">Usługi</span>
-        </div>
-        <div class="nav-item active">
-            <span class="nav-label">Kod QR</span>
-        </div>
-        <div class="nav-item">
-            <span class="nav-label">Więcej</span>
-        </div>
+        <div class="nav-item">Dokumenty</div>
+        <div class="nav-item">Usługi</div>
+        <div class="nav-item active">Kod QR</div>
+        <div class="nav-item">Więcej</div>
     </nav>
 
     <script>
-        // Generowanie losowego kodu QR (zachowując stały kod numeryczny 656736)
         document.addEventListener('DOMContentLoaded', function() {
-            // Generujemy losowe dane dla QR, ale zachowujemy stały kod widoczny
-            const randomData = "mObywatel:" + Math.random().toString(36).substring(2) + "|ref:656736";
-            
+            // Generowanie kodu QR
             new QRCode(document.getElementById("qrcode"), {
-                text: randomData,
-                width: 200,
-                height: 200,
+                text: "656736",
+                width: 160,  // Zmniejszony rozmiar
+                height: 160, // Zmniejszony rozmiar
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
 
-            // Timer odliczający czas (start od 2:33)
-            let timeLeft = 153; // 2 min 33 sek
+            // Timer odliczający czas (3 minuty)
+            let timeLeft = 180;
             const timerElement = document.getElementById('timer');
             
             const updateTimer = () => {
