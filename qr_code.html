@@ -17,7 +17,7 @@
 
         <div class="qr-section">
             <div id="qrcode"></div>
-            <div class="numeric-code">656736</div>
+            <div class="numeric-code" id="code-display">------</div>
             <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
         </div>
     </div>
@@ -42,10 +42,18 @@
     </nav>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            // Funkcja do generowania losowego 6-cyfrowego kodu
+            function generateRandomCode() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+
+            const code = generateRandomCode();
+            document.getElementById("code-display").textContent = code;
+
             // Generowanie kodu QR
             new QRCode(document.getElementById("qrcode"), {
-                text: "656736",
+                text: code,
                 width: 160,
                 height: 160,
                 colorDark: "#000000",
@@ -56,12 +64,12 @@
             // Timer odliczający czas (3 minuty)
             let timeLeft = 180;
             const timerElement = document.getElementById('timer');
-            
+
             const updateTimer = () => {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
                 timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
-                
+
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     timerElement.textContent = "0 min 00 sek.";
@@ -69,13 +77,13 @@
                 }
                 timeLeft--;
             };
-            
+
             const timer = setInterval(updateTimer, 1000);
             updateTimer();
 
             // Obsługa kliknięć w pasek nawigacyjny
             document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function () {
                     document.querySelectorAll('.nav-item').forEach(nav => {
                         nav.classList.remove('active');
                     });
@@ -85,8 +93,9 @@
         });
     </script>
 
+    <!-- Skrypty z katalogu assets -->
     <script src="assets/bar.js"></script>
-    <script src="assets/card.js?v=1.0"></script>
+    <script src="assets/qr.js"></script>
     <script src="assets/manifest.js"></script>
 </body>
 </html>
