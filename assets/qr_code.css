@@ -4,7 +4,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -12,74 +11,65 @@ body {
     color: #000;
     max-width: 100%;
     overflow-x: hidden;
-    padding-bottom: 70px;
-    line-height: 1.4;
-}
-
-/* Status bar */
-.status-bar {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 15px;
-    font-size: 14px;
-    color: #000;
-    background-color: #f8f8f8;
+    padding-bottom: 60px;
 }
 
 /* Nagłówek */
 .header {
-    padding: 15px 20px 10px;
+    padding: 20px 16px 10px;
+    text-align: center;
 }
 
-.page-title {
-    font-size: 24px;
+.header h1 {
+    font-size: 22px;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     color: #000;
-    text-align: center;
 }
 
 .instruction {
     font-size: 16px;
     color: #666;
-    text-align: center;
-    margin: 0 auto;
-    max-width: 300px;
+    line-height: 1.4;
 }
 
 /* Sekcja z kodem QR */
 .qr-section {
     margin: 25px auto;
     text-align: center;
-    padding: 0 20px;
 }
 
-#qrcode {
-    margin: 0 auto;
-    padding: 10px;
+.qr-code-placeholder {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 15px;
     background-color: #fff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    display: inline-block;
-}
-
-#qrcode img {
-    display: block;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .numeric-code {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 600;
-    letter-spacing: 3px;
-    margin: 20px 0 10px;
+    letter-spacing: 2px;
+    margin: 10px 0;
     color: #000;
-    font-family: monospace;
 }
 
 .expiry-timer {
     font-size: 16px;
     color: #d32f2f;
     margin-top: 5px;
+}
+
+/* Linia podziału */
+.divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 20px 16px;
 }
 
 /* Dolna nawigacja */
@@ -92,8 +82,7 @@ body {
     justify-content: space-around;
     background-color: #fff;
     border-top: 1px solid #e0e0e0;
-    padding: 8px 0 4px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+    padding: 10px 0;
 }
 
 .nav-item {
@@ -103,19 +92,13 @@ body {
     font-size: 12px;
     color: #666;
     padding: 5px 10px;
-    text-decoration: none;
-    width: 25%;
 }
 
 .nav-item.active {
     color: #0068B5;
-}
-
-.nav-icon {
-    font-size: 24px;
-    margin-bottom: 2px;
+    font-weight: 500;
 }
 
 .nav-label {
-    font-size: 12px;
+    margin-top: 5px;
 }
