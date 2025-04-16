@@ -25,19 +25,19 @@
     <!-- Pasek nawigacyjny -->
     <nav class="bottom-nav">
         <a href="desktop.html" class="nav-item">
-            <span class="nav-label">Pulpit</span>
+            <span class="nav-text">Pulpit</span>
         </a>
         <a href="documents.html" class="nav-item">
-            <span class="nav-label">Dokumenty</span>
+            <span class="nav-text">Dokumenty</span>
         </a>
         <a href="services.html" class="nav-item">
-            <span class="nav-label">Usługi</span>
+            <span class="nav-text">Usługi</span>
         </a>
         <a href="qr.html" class="nav-item active">
-            <span class="nav-label">Kod QR</span>
+            <span class="nav-text">Kod QR</span>
         </a>
         <a href="more.html" class="nav-item">
-            <span class="nav-label">Więcej</span>
+            <span class="nav-text">Więcej</span>
         </a>
     </nav>
 
@@ -72,6 +72,16 @@
             
             const timer = setInterval(updateTimer, 1000);
             updateTimer();
+
+            // Obsługa kliknięć w pasek nawigacyjny
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-item').forEach(nav => {
+                        nav.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
         });
     </script>
 
