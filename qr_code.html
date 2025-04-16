@@ -1,65 +1,69 @@
 <!DOCTYPE html>
-<html lang="pl">
-<head>
-    <title>mObywatel - Weryfikacja</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
-    <link rel="stylesheet" href="assets/qr.css">
-    <link rel="stylesheet" href="assets/main.css">
-    <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="apple-touch-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="shortcut icon" href="https://i.imgur.com/n4zJhma.png">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-</head>
-<body>
+ <html lang="pl">
+ <head>
+     <title>mObywatel - Weryfikacja</title>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+     <link rel="stylesheet" href="assets/qr_code.css">
+     <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
+     <link rel="apple-touch-icon" href="https://i.imgur.com/n4zJhma.png">
+     <link rel="shortcut icon" href="https://i.imgur.com/n4zJhma.png">
+     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+ </head>
+ <body>
+     <div class="container">
+         <div class="header">
+             <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
+             <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
+         </div>
+ 
+         <div class="bottom_bar">
+            <div class="bottom_bar_grid">
+                <div class="bottom_element_grid" send="home">
+                    <div class="bottom_element_image home"></div>
+                    <p class="bottom_element_text">Pulpit</p>
+                </div>
+                <div class="bottom_element_grid" send="documents">
+                    <div class="bottom_element_image documents"></div>
+                    <p class="bottom_element_text">Dokumenty</p>
+                </div>
+                <div class="bottom_element_grid" send="services">
+                    <div class="bottom_element_image services"></div>
+                    <p class="bottom_element_text">Usługi</p>
+                </div>
+                <div class="bottom_element_grid" send="qr">
+                    <div class="bottom_element_image qr qr_open"></div>
+                    <p class="bottom_element_text open">Kod QR</p>
+                </div>
+                <div class="bottom_element_grid" send="more">
+                    <div class="bottom_element_image more"></div>
+                    <p class="bottom_element_text">Więcej</p>
+                </div>
+         </div>
+     </div>
 
-    <div class="error">
-        <div class="opacity close"></div>
-        <div class="error_box">
-            <p class="error_title">Coś poszło nie tak...</p>
-            <p class="error_description">Wygląda na to, że wystąpił błąd, spróbuj ponownie później.</p>
-            <p class="error_button close">Rozumiem</p>
-        </div>
-    </div>
-
-    <div class="bottom_bar">
-        <div class="bottom_bar_grid">
-            <div class="bottom_element_grid" send="home">
-                <div class="bottom_element_image home"></div>
-                <p class="bottom_element_text">Pulpit</p>
-            </div>
-            <div class="bottom_element_grid" send="documents">
-                <div class="bottom_element_image documents"></div>
-                <p class="bottom_element_text">Dokumenty</p>
-            </div>
-            <div class="bottom_element_grid" send="services">
-                <div class="bottom_element_image services"></div>
-                <p class="bottom_element_text">Usługi</p>
-            </div>
-            <div class="bottom_element_grid" send="qr">
-                <div class="bottom_element_image qr qr_open"></div>
-                <p class="bottom_element_text open">Kod QR</p>
-            </div>
-            <div class="bottom_element_grid" send="more">
-                <div class="bottom_element_image more"></div>
-                <p class="bottom_element_text">Więcej</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <p class="main_title">Kod QR</p>
-        <p class="description">Pokaż ten kod osobie sprawdzającej</p>
-
-        <div class="qr-section" style="text-align: center; margin-top: 30px;">
-            <div id="qrcode" style="margin: auto;"></div>
-            <div class="numeric-code" id="code-display" style="font-size: 24px; margin-top: 10px;">------</div>
-            <div class="expiry-timer" style="margin-top: 5px;">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
-        </div>
-    </div>
+       <!-- Pasek nawigacyjny -->
+       <nav class="bottom-nav">
+        <a href="desktop.html" class="nav-item">
+            <span class="nav-text">Pulpit</span>
+        </a>
+        <a href="documents.html" class="nav-item">
+            <span class="nav-text">Dokumenty</span>
+        </a>
+        <a href="services.html" class="nav-item">
+            <span class="nav-text">Usługi</span>
+        </a>
+        <a href="qr.html" class="nav-item active">
+            <span class="nav-text">Kod QR</span>
+        </a>
+        <a href="more.html" class="nav-item">
+            <span class="nav-text">Więcej</span>
+        </a>
+    </nav>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Funkcja do generowania losowego 6-cyfrowego kodu
             function generateRandomCode() {
                 return Math.floor(100000 + Math.random() * 900000).toString();
             }
@@ -67,38 +71,47 @@
             const code = generateRandomCode();
             document.getElementById("code-display").textContent = code;
 
+            // Generowanie kodu QR
             new QRCode(document.getElementById("qrcode"), {
                 text: code,
                 width: 160,
                 height: 160,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
+                 correctLevel: QRCode.CorrectLevel.H
+             });
+ 
+             // Timer odliczający czas (3 minuty)
+             let timeLeft = 180;
+             const timerElement = document.getElementById('timer');
 
-            let timeLeft = 180;
-            const timerElement = document.getElementById('timer');
+             const updateTimer = () => {
+                 const minutes = Math.floor(timeLeft / 60);
+                 const seconds = timeLeft % 60;
+                 timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
 
-            const updateTimer = () => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
+                 if (timeLeft <= 0) {
+                     clearInterval(timer);
+                     timerElement.textContent = "0 min 00 sek.";
+                     timerElement.parentElement.textContent = "Kod wygasł!";
+                 }
+                 timeLeft--;
+             };
 
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    timerElement.textContent = "0 min 00 sek.";
-                    timerElement.parentElement.textContent = "Kod wygasł!";
-                }
-                timeLeft--;
-            };
+             const timer = setInterval(updateTimer, 1000);
+             updateTimer();
+ 
+             // Obsługa kliknięć w pasek nawigacyjny
+             document.querySelectorAll('.nav-item').forEach(item => {
+                 item.addEventListener('click', function () {
+                     document.querySelectorAll('.nav-item').forEach(nav => {
+                         nav.classList.remove('active');
+                     });
+                    });
+                     this.classList.add('active');
+                 });
+             });
+         });
+     </script>
 
-            const timer = setInterval(updateTimer, 1000);
-            updateTimer();
-        });
-    </script>
 
-    <script src="assets/bar.js"></script>
-    <script src="assets/qr.js"></script>
-    <script src="assets/manifest.js"></script>
-</body>
-</html>
