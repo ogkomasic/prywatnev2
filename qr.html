@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <title>mObywatel</title>
+    <title>mObywatel - Weryfikacja</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="assets/qr.css">
-    <link rel="stylesheet" href="assets/main.css">
-    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="apple-touch-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="shortcut icon" href="https://i.imgur.com/n4zJhma.png">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="assets/qr_code.css">
+    <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
+            <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
+        </div>
 
-    <div class="error">
-        <div class="opacity close"></div>
-        <div class="error_box">
-            <p class="error_title">Coś poszło nie tak...</p>
-            <p class="error_description">Wygląda na to, że wystąpił bład, spróbuj ponownie później.</p>
-            <p class="error_button close">Rozumiem</p>
+        <div class="qr-section">
+            <div id="qrcode"></div>
+            <div class="numeric-code">656736</div>
+            <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
         </div>
     </div>
 
+    <!-- Pasek nawigacyjny zgodny z Twoim bar.js -->
     <div class="bottom_bar">
         <div class="bottom_bar_grid">
-            <div class="bottom_element_grid" send="home">
+            <div class="bottom_element_grid" send="desktop">
                 <div class="bottom_element_image home"></div>
                 <p class="bottom_element_text">Pulpit</p>
             </div>
@@ -48,31 +48,41 @@
         </div>
     </div>
 
-    <div class="container">
-        <p class="main_title">Kod QR</p>
-        <p class="description">Wybierz, co chcesz zrobić</p>
-        <div class="action_grid">
-            <div class="action" id="scanQR">
-                <img class="action_image" src="https://i.imgur.com/VCThE9p.png">
-                <div class="action_text">
-                    <p class="action_title">Zeskanuj kod QR</p>
-                    <p class="action_subtitle">Zaloguj się lub potwierdź swoje dane.</p>
-                </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
-            </div>
-            <div class="action" id="showQR">
-                <img class="action_image" src="https://i.imgur.com/SdPmeGM.png">
-                <div class="action_text">
-                    <p class="action_title">Pokaż kod QR</p>
-                    <p class="action_subtitle">Sprawdź dokument innej osoby.</p>
-                </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
-            </div>
-        </div>
-    </div>
+    <script>
+        // Timer i generowanie QR
+        document.addEventListener('DOMContentLoaded', function() {
+            new QRCode(document.getElementById("qrcode"), {
+                text: "656736",
+                width: 160,
+                height: 160,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            let timeLeft = 180;
+            const timerElement = document.getElementById('timer');
+            
+            const updateTimer = () => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerElement.textContent = "0 min 00 sek.";
+                    timerElement.parentElement.textContent = "Kod wygasł!";
+                }
+                timeLeft--;
+            };
+            
+            const timer = setInterval(updateTimer, 1000);
+            updateTimer();
+        });
+    </script>
 
     <script src="assets/bar.js"></script>
-    <script src="assets/qr.js"></script>
+    <script src="assets/card.js?v=1.0"></script>
     <script src="assets/manifest.js"></script>
 </body>
 </html>
