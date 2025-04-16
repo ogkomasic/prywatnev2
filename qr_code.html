@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="assets/qr_code.css">
     <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
     <div class="header">
@@ -14,9 +15,9 @@
     </div>
 
     <div class="qr-section">
-        <div class="qr-code-placeholder"></div>
+        <div id="qrcode"></div>
         <div class="numeric-code">656736</div>
-        <div class="expiry-timer">Kod wygaśnie za 3 min 0 sek.</div>
+        <div class="expiry-timer">Kod wygaśnie za: <span id="timer">2 min 33 sek.</span></div>
     </div>
 
     <div class="divider"></div>
@@ -37,26 +38,43 @@
     </nav>
 
     <script>
-        // Timer odliczający czas
-        let timeLeft = 180; // 3 minuty
-        const timerElement = document.querySelector('.expiry-timer');
-        
-        const updateTimer = () => {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerElement.textContent = `Kod wygaśnie za ${minutes} min ${seconds} sek.`;
+        // Generowanie losowego kodu QR (zachowując stały kod numeryczny 656736)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generujemy losowe dane dla QR, ale zachowujemy stały kod widoczny
+            const randomData = "mObywatel:" + Math.random().toString(36).substring(2) + "|ref:656736";
             
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                timerElement.textContent = "Kod wygasł!";
-            }
-            timeLeft--;
-        };
-        
-        const timer = setInterval(updateTimer, 1000);
-        updateTimer(); // Wywołanie natychmiastowe
+            new QRCode(document.getElementById("qrcode"), {
+                text: randomData,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Timer odliczający czas (start od 2:33)
+            let timeLeft = 153; // 2 min 33 sek
+            const timerElement = document.getElementById('timer');
+            
+            const updateTimer = () => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerElement.textContent = "0 min 00 sek.";
+                    timerElement.parentElement.textContent = "Kod wygasł!";
+                }
+                timeLeft--;
+            };
+            
+            const timer = setInterval(updateTimer, 1000);
+            updateTimer();
+        });
     </script>
-<script src="assets/bar.js"></script>
+
+    <script src="assets/bar.js"></script>
     <script src="assets/card.js?v=1.0"></script>
     <script src="assets/manifest.js"></script>
 </body>
