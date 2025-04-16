@@ -11,13 +11,26 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
-            <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
+        <!-- Przycisk WRÓĆ -->
+        <button class="back-button" onclick="window.history.back()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="#0068B5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            WRÓĆ
+        </button>
+
+        <!-- Nagłówek -->
+        <div class="qr-header">
+            <h1>Kod QR</h1>
         </div>
 
-        <div class="qr-section">
+        <!-- Zawartość główna -->
+        <div class="content">
+            <p class="instruction">Pokaż kod QR osobie, której dokument sprawdzasz</p>
+            <p class="subinstruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
+            
             <div id="qrcode"></div>
+            
             <div class="numeric-code" id="code-display">------</div>
             <div class="expiry-timer">Kod wygaśnie za: <span id="timer">3 min 00 sek.</span></div>
         </div>
