@@ -6,83 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="assets/qr_code.css">
     <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
-    <div class="status-bar">
-        <span class="time">18:57</span>
-        <span class="network">LTE</span>
-    </div>
-
     <div class="header">
-        <div class="page-title">Kod QR</div>
+        <h1>Pokaż kod QR osobie, której dokument sprawdzasz</h1>
         <p class="instruction">Gdy ta osoba zeskanuje lub wpisze kod, jej dane pojawią się na Twoim telefonie</p>
     </div>
 
     <div class="qr-section">
-        <div id="qrcode"></div>
+        <div class="qr-code-placeholder"></div>
         <div class="numeric-code">656736</div>
-        <div class="expiry-timer">Kod wygaśnie za: <span id="timer">2 min 59 sek.</span></div>
+        <div class="expiry-timer">Kod wygaśnie za 3 min 0 sek.</div>
     </div>
 
+    <div class="divider"></div>
+
     <nav class="bottom-nav">
-        <a href="documents.html" class="nav-item">
-            <div class="nav-icon">📄</div>
+        <div class="nav-item">
             <span class="nav-label">Dokumenty</span>
-        </a>
-        <a href="services.html" class="nav-item">
-            <div class="nav-icon">🛠️</div>
+        </div>
+        <div class="nav-item">
             <span class="nav-label">Usługi</span>
-        </a>
-        <a href="qr.html" class="nav-item active">
-            <div class="nav-icon">🔳</div>
+        </div>
+        <div class="nav-item active">
             <span class="nav-label">Kod QR</span>
-        </a>
-        <a href="more.html" class="nav-item">
-            <div class="nav-icon">⋮</div>
+        </div>
+        <div class="nav-item">
             <span class="nav-label">Więcej</span>
-        </a>
+        </div>
     </nav>
 
     <script>
-        // Generowanie kodu QR
-        new QRCode(document.getElementById("qrcode"), {
-            text: "656736",
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-
-        // Aktualny czas w status bar
-        function updateTime() {
-            const now = new Date();
-            document.querySelector('.time').textContent = 
-                `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-
         // Timer odliczający czas
-        let timeLeft = 179; // 2 min 59 sek
-        const timerElement = document.getElementById('timer');
+        let timeLeft = 180; // 3 minuty
+        const timerElement = document.querySelector('.expiry-timer');
         
         const updateTimer = () => {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            timerElement.textContent = `${minutes} min ${seconds.toString().padStart(2, '0')} sek.`;
+            timerElement.textContent = `Kod wygaśnie za ${minutes} min ${seconds} sek.`;
             
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                timerElement.textContent = "0 min 00 sek.";
-                timerElement.parentElement.textContent = "Kod wygasł!";
+                timerElement.textContent = "Kod wygasł!";
             }
             timeLeft--;
         };
         
         const timer = setInterval(updateTimer, 1000);
-        updateTimer();
+        updateTimer(); // Wywołanie natychmiastowe
     </script>
 </body>
 </html>
