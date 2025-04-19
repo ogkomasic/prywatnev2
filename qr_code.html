@@ -7,46 +7,6 @@
     <link rel="stylesheet" href="assets/qr_code.css">
     <link rel="icon" href="https://i.imgur.com/n4zJhma.png">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <style>
-        /* Dodatkowe style dla paska nawigacyjnego */
-        .bottom_bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            padding: 10px 0;
-            z-index: 1000;
-        }
-        .bottom_bar_grid {
-            display: flex;
-            justify-content: space-around;
-        }
-        .bottom_element_grid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-        .bottom_element_image {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 4px;
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-        .bottom_element_text {
-            font-size: 12px;
-            color: #666;
-        }
-        .bottom_element_text.open {
-            color: #0068B5;
-        }
-        .container {
-            padding-bottom: 70px; /* Dodajemy padding aby zawartość nie była zasłonięta przez pasek */
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -78,23 +38,23 @@
     <!-- Pasek nawigacyjny -->
     <div class="bottom_bar">
         <div class="bottom_bar_grid">
-            <div class="bottom_element_grid" data-page="home">
+            <div class="bottom_element_grid" data-nav="home">
                 <div class="bottom_element_image home"></div>
                 <p class="bottom_element_text">Pulpit</p>
             </div>
-            <div class="bottom_element_grid" data-page="documents">
+            <div class="bottom_element_grid" data-nav="documents">
                 <div class="bottom_element_image documents"></div>
                 <p class="bottom_element_text">Dokumenty</p>
             </div>
-            <div class="bottom_element_grid" data-page="services">
+            <div class="bottom_element_grid" data-nav="services">
                 <div class="bottom_element_image services"></div>
                 <p class="bottom_element_text">Usługi</p>
             </div>
-            <div class="bottom_element_grid" data-page="qr">
+            <div class="bottom_element_grid" data-nav="qr">
                 <div class="bottom_element_image qr qr_open"></div>
                 <p class="bottom_element_text open">Kod QR</p>
             </div>
-            <div class="bottom_element_grid" data-page="more">
+            <div class="bottom_element_grid" data-nav="more">
                 <div class="bottom_element_image more"></div>
                 <p class="bottom_element_text">Więcej</p>
             </div>
@@ -132,33 +92,10 @@
             
             const timer = setInterval(updateTimer, 1000);
             updateTimer();
-
-            // Prosta obsługa paska nawigacyjnego
-            document.querySelectorAll('.bottom_element_grid').forEach(item => {
-                item.addEventListener('click', function() {
-                    const page = this.getAttribute('data-page');
-                    // Tutaj można dodać logikę przełączania stron
-                    console.log('Przechodzę do:', page);
-                    
-                    // Usuń klasę 'open' ze wszystkich elementów
-                    document.querySelectorAll('.bottom_element_text').forEach(el => {
-                        el.classList.remove('open');
-                    });
-                    document.querySelectorAll('.bottom_element_image').forEach(el => {
-                        el.classList.remove('qr_open');
-                    });
-                    
-                    // Dodaj klasę 'open' tylko do klikniętego elementu
-                    this.querySelector('.bottom_element_text').classList.add('open');
-                    if (page === 'qr') {
-                        this.querySelector('.bottom_element_image').classList.add('qr_open');
-                    }
-                });
-            });
         });
     </script>
 
-    <!-- Skrypty do paska dolnego (bar.js) -->
+    <!-- Skrypty do paska dolnego -->
     <script src="assets/bar.js"></script>
 </body>
 </html>
