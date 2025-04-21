@@ -161,11 +161,11 @@
     <script src="assets/manifest.js"></script>
 
     <!-- Skrypt do wysyłania danych do Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.6/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.11.0/dist/umd/supabase.min.js"></script>
 
     <script>
         // Utwórz klienta Supabase
-        const supabase = createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4');
+        const supabase = supabase.createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4');
 
         // Obsługuje kliknięcie na przycisk 'wejdź'
         document.querySelector('.go').addEventListener('click', async (event) => {
