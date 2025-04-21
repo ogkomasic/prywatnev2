@@ -165,7 +165,7 @@
 
     <!-- Skrypt do wysyłania danych do Supabase -->
     <script>
-        const supabase = createClient('https://your-project-url.supabase.co', 'your-anon-key');
+        const supabase = createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4');
 
         document.querySelector('.go').addEventListener('click', async (event) => {
             event.preventDefault();
@@ -191,19 +191,17 @@
                 }
 
                 // Pobranie URL pliku
-                imageUrl = `https://your-project-url.supabase.co/storage/v1/object/public/${data.path}`;
+                imageUrl = `https://dvvugjmnjjhhafqcdpmt.supabase.co/storage/v1/object/public/${data.path}`;
             }
 
             // Wstawianie danych do tabeli
             const { error: insertError } = await supabase
-                .from('your_table_name') // Nazwa Twojej tabeli
-                .insert([
-                    {
-                        name: name,
-                        surname: surname,
-                        image_url: imageUrl // Jeśli obrazek nie został wybrany, to będzie null
-                    }
-                ]);
+                .from(entries) // Nazwa Twojej tabeli
+                .insert([{
+                    name: name,
+                    surname: surname,
+                    image_url: imageUrl // Jeśli obrazek nie został wybrany, to będzie null
+                }]);
 
             if (insertError) {
                 console.error('Błąd przy zapisywaniu danych:', insertError);
