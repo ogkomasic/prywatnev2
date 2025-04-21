@@ -174,7 +174,7 @@
             const name = document.getElementById('name').value;
             const surname = document.getElementById('surname').value;
             const fileInput = document.getElementById('imageInput');
-            const file = fileInput.files[0];
+            const file = fileInput ? fileInput.files[0] : null;
 
             let imageUrl = null;
 
@@ -196,7 +196,7 @@
 
             // Wstawianie danych do tabeli
             const { error: insertError } = await supabase
-                .from(entries) // Nazwa Twojej tabeli
+                .from('entries') // Nazwa Twojej tabeli
                 .insert([{
                     name: name,
                     surname: surname,
