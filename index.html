@@ -11,15 +11,12 @@
 <body>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicjalizacja klienta Supabase
-            const supabaseClient = supabase.createClient(
-                'https://dvvugjmnjjhhafqcdpmt.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4'
-            );
-
+            // Zmienna z Twoim kluczem API
+            const SUPABASE_URL = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
+            
             // Sprawdź, czy użytkownik jest zalogowany
             if (!sessionStorage.getItem('loggedIn')) {
-                // Jeśli nie jest zalogowany, przekieruj do strony logowania
                 window.location.href = 'login.html';
             }
 
@@ -52,32 +49,53 @@
                         return;
                     }
 
-                    // Zapisz dane w Supabase
-                    const { data, error } = await supabaseClient.from('entries').insert([
-                        {
-                            name: name,
-                            surname: surname,
-                            sex: sex,
-                            birth_date: `${birthYear}-${birthMonth}-${birthDay}`,
-                            nationality: nationality,
-                            family_name: familyName,
-                            fathers_family_name: fathersFamilyName,
-                            mothers_family_name: mothersFamilyName,
-                            birth_place: birthPlace,
-                            country_of_birth: countryOfBirth,
-                            adress1: adress1,
-                            adress2: adress2,
-                            city: city
-                        }
-                    ]);
+                    // Sprawdzenie, czy data jest poprawna
+                    const birthDate = new Date(`${birthYear}-${birthMonth}-${birthDay}`);
+                    if (birthDate.toString() === 'Invalid Date') {
+                        alert("Wprowadź poprawną datę!");
+                        return;
+                    }
 
-                    if (error) {
-                        console.error("Błąd przy zapisywaniu danych:", error);
-                        alert("Wystąpił błąd przy zapisywaniu danych.");
-                    } else {
+                    // Przygotowanie danych do wysłania
+                    const data = {
+                        name: name,
+                        surname: surname,
+                        sex: sex,
+                        birth_date: `${birthYear}-${birthMonth}-${birthDay}`,
+                        nationality: nationality,
+                        family_name: familyName,
+                        fathers_family_name: fathersFamilyName,
+                        mothers_family_name: mothersFamilyName,
+                        birth_place: birthPlace,
+                        country_of_birth: countryOfBirth,
+                        adress1: adress1,
+                        adress2: adress2,
+                        city: city
+                    };
+
+                    // Wysyłanie danych do Supabase za pomocą fetch
+                    try {
+                        const response = await fetch(`${SUPABASE_URL}/rest/v1/entries`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                                'apikey': SUPABASE_KEY
+                            },
+                            body: JSON.stringify([data])
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(`Błąd: ${errorData.message}`);
+                        }
+
                         alert("Dane zostały zapisane pomyślnie!");
                         // Resetowanie formularza
                         document.querySelectorAll('.input').forEach(input => input.value = '');
+                    } catch (error) {
+                        console.error("Błąd przy zapisywaniu danych:", error);
+                        alert("Wystąpił błąd przy zapisywaniu danych.");
                     }
                 });
             } else {
