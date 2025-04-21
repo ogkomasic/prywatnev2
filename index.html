@@ -57,7 +57,7 @@
         <span class="placeholder">Imię (imiona)</span>
         <p class="error">To pole jest wymagane</p>
     </div>
- 
+
     <div class="input_holder">
         <input type="text" id="surname" class="input" placeholder="">
         <span class="placeholder">Nazwisko</span>
@@ -162,53 +162,54 @@
     <script src="assets/manifest.js"></script>
 
     <script>
-        // Utwórz klienta Supabase
-        const supabase = supabase.createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4');
+        // Utwórz klienta Supabase po załadowaniu strony
+        window.onload = () => {
+            const supabase = supabase.createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4');
 
-        // Obsługuje kliknięcie na przycisk 'wejdź'
-        document.querySelector('.go').addEventListener('click', async (event) => {
-            event.preventDefault();
+            // Obsługuje kliknięcie na przycisk 'wejdź'
+            document.querySelector('.go').addEventListener('click', async (event) => {
+                event.preventDefault();
 
-            // Pobranie danych z formularza
-            const name = document.getElementById('name').value;
-            const surname = document.getElementById('surname').value;
-            const fileInput = document.getElementById('imageInput');
-            const file = fileInput.files[0];
+                // Pobranie danych z formularza
+                const name = document.getElementById('name').value;
+                const surname = document.getElementById('surname').value;
+                const fileInput = document.getElementById('imageInput');
+                const file = fileInput.files[0];
 
-            let imageUrl = null;
+                let imageUrl = null;
 
-            // Jeśli użytkownik wybrał plik
-            if (file) {
-                const { data, error } = await supabase
-                    .storage
-                    .from('images') // Nazwa bucketa w Supabase
-                    .upload(`public/${file.name}`, file);
+                // Jeśli użytkownik wybrał plik
+                if (file) {
+                    const { data, error } = await supabase
+                        .storage
+                        .from('images') // Nazwa bucketa w Supabase
+                        .upload(`public/${file.name}`, file);
 
-                if (error) {
-                    console.error('Błąd przy przesyłaniu pliku:', error);
-                    return;
+                    if (error) {
+                        console.error('Błąd przy przesyłaniu pliku:', error);
+                        return;
+                    }
+
+                    // Pobranie URL pliku
+                    imageUrl = `https://dvvugjmnjjhhafqcdpmt.supabase.co/storage/v1/object/public/${data.path}`;
                 }
 
-                // Pobranie URL pliku
-                imageUrl = `https://dvvugjmnjjhhafqcdpmt.supabase.co/storage/v1/object/public/${data.path}`;
-            }
+                // Wstawianie danych do tabeli
+                const { error: insertError } = await supabase
+                    .from('entries') // Nazwa Twojej tabeli
+                    .insert([{
+                        name: name,
+                        surname: surname,
+                        image_url: imageUrl // Jeśli obrazek nie został wybrany, to będzie null
+                    }]);
 
-            // Wstawianie danych do tabeli
-            const { error: insertError } = await supabase
-                .from('entries') // Nazwa Twojej tabeli
-                .insert([{
-                    name: name,
-                    surname: surname,
-                    image_url: imageUrl // Jeśli obrazek nie został wybrany, to będzie null
-                }]);
-
-
-            if (insertError) {
-                console.error('Błąd przy zapisywaniu danych:', insertError);
-            } else {
-                alert('Dane zostały zapisane!');
-            }
-        });
+                if (insertError) {
+                    console.error('Błąd przy zapisywaniu danych:', insertError);
+                } else {
+                    alert('Dane zostały zapisane!');
+                }
+            });
+        };
     </script>
 </body>
 </html>
