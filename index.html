@@ -164,8 +164,9 @@
     <script src="assets/manifest.js"></script>
 
     <!-- Skrypt do wysyłania danych do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
     <script>
-        const supabase = createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4');
+        const supabase = createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'your-anon-key-here');
 
         document.querySelector('.go').addEventListener('click', async (event) => {
             event.preventDefault();
@@ -196,12 +197,13 @@
 
             // Wstawianie danych do tabeli
             const { error: insertError } = await supabase
-                .from('your_table') // Zmień 'your_table' na nazwę tabeli w Supabase
+                .from('entries') // Nazwa Twojej tabeli
                 .insert([{
                     name: name,
                     surname: surname,
                     image_url: imageUrl // Jeśli obrazek nie został wybrany, to będzie null
                 }]);
+
 
             if (insertError) {
                 console.error('Błąd przy zapisywaniu danych:', insertError);
