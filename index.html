@@ -57,7 +57,7 @@
         <span class="placeholder">Imię (imiona)</span>
         <p class="error">To pole jest wymagane</p>
     </div>
-
+ 
     <div class="input_holder">
         <input type="text" id="surname" class="input" placeholder="">
         <span class="placeholder">Nazwisko</span>
@@ -162,8 +162,9 @@
     <script src="assets/manifest.js"></script>
 
     <script>
-        // Utwórz klienta Supabase po załadowaniu strony
-        window.onload = () => {
+        // Przenieś całą inicjalizację Supabase do window.onload
+        window.onload = function() {
+            // Utwórz klienta Supabase
             const supabase = supabase.createClient('https://dvvugjmnjjhhafqcdpmt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4');
 
             // Obsługuje kliknięcie na przycisk 'wejdź'
@@ -202,6 +203,7 @@
                         surname: surname,
                         image_url: imageUrl // Jeśli obrazek nie został wybrany, to będzie null
                     }]);
+
 
                 if (insertError) {
                     console.error('Błąd przy zapisywaniu danych:', insertError);
