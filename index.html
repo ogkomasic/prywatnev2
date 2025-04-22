@@ -11,16 +11,12 @@
 <body>
     <script>
     const SUPABASE_URL = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // obetnij do testów
-
-    function logToScreen(message) {
-        const logEl = document.getElementById('log');
-        if (logEl) logEl.innerText += message + "\n";
-    }
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
 
     document.addEventListener('DOMContentLoaded', function () {
+        // Sprawdź czy użytkownik jest zalogowany
         if (sessionStorage.getItem('loggedIn') !== 'true') {
-            logToScreen("Brak zalogowania - przekierowanie");
+            console.log("Brak zalogowania - przekierowanie");
             window.location.href = 'login.html';
             return;
         }
@@ -47,40 +43,43 @@
                 const city = document.getElementById('city').value;
 
                 if (!name || !surname || !nationality || !familyName || !fathersFamilyName || !mothersFamilyName || !birthPlace || !countryOfBirth || !adress1 || !adress2 || !city || !birthDay || !birthMonth || !birthYear) {
-                    logToScreen("⚠️ Wszystkie pola są wymagane!");
+                    alert("Wszystkie pola są wymagane!");
                     return;
                 }
 
+                // Walidacja daty
                 const dateStr = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
                 const birthDate = new Date(dateStr);
                 if (isNaN(birthDate.getTime())) {
-                    logToScreen("⚠️ Wprowadź poprawną datę!");
+                    alert("Wprowadź poprawną datę!");
                     return;
                 }
 
                 const data = {
-                    name, surname, gender: sex,
+                    name,
+                    surname,
+                    gender: sex,
                     dob_day: birthDay,
                     dob_month: birthMonth,
                     dob_year: birthYear,
-                    nationality, family_name: familyName,
+                    nationality,
+                    family_name: familyName,
                     fathers_family_name: fathersFamilyName,
                     mothers_family_name: mothersFamilyName,
                     birth_place: birthPlace,
                     country_of_birth: countryOfBirth,
-                    adress1, adress2, city
+                    adress1,
+                    adress2,
+                    city
                 };
 
                 const photoElement = document.querySelector('.upload_uploaded');
                 const photoUrl = photoElement ? photoElement.src : '';
                 if (!photoUrl) {
-                    logToScreen("⚠️ Proszę dodać zdjęcie!");
+                    alert("Proszę dodać zdjęcie!");
                     return;
                 }
                 data.photo_url = photoUrl;
-
-                logToScreen("⏳ Wysyłam dane do Supabase...");
-                logToScreen(JSON.stringify(data, null, 2));
 
                 try {
                     const response = await fetch(`${SUPABASE_URL}/rest/v1/entries`, {
@@ -94,46 +93,20 @@
                         body: JSON.stringify([data])
                     });
 
-                    // Logowanie pełnej odpowiedzi
-                    logToScreen(`📡 Odpowiedź status: ${response.status}`);
-                    const responseText = await response.text();
-                    logToScreen("Odpowiedź serwera (tekst):");
-                    logToScreen(responseText);
-
-                    // Próba parsowania odpowiedzi jako JSON
-                    try {
-                        const responseJson = JSON.parse(responseText);
-                        logToScreen("Odpowiedź serwera (JSON):");
-                        logToScreen(JSON.stringify(responseJson, null, 2));
-                    } catch (e) {
-                        logToScreen("❌ Błąd parsowania odpowiedzi jako JSON");
-                    }
-
                     if (!response.ok) {
-                        logToScreen("❌ Błąd z backendu:");
-                        throw new Error(`Błąd: ${response.status} - ${responseText}`);
+                        const errorData = await response.json();
+                        throw new Error(`Błąd: ${errorData.message}`);
                     }
 
-                    logToScreen("✅ Dane zapisane pomyślnie!");
+                    console.log("Dane zapisane pomyślnie!");
                     document.querySelectorAll('.input').forEach(input => input.value = '');
                 } catch (error) {
-                    logToScreen("❌ Błąd przy zapisie:");
-                    logToScreen(error.message);
-
-                    // Cofnięcie użytkownika na poprzednią stronę
-                    logToScreen("🔙 Cofanie na poprzednią stronę...");
-                    setTimeout(() => {
-                        window.history.back();
-                    }, 2000);  // 2 sekundy opóźnienia, aby użytkownik zobaczył komunikat
+                    console.error("Błąd przy zapisie:", error);
                 }
             });
         }
     });
 </script>
-
-
-
-<div id="log" style="white-space:pre-wrap; background:#111; color:#0f0; padding:10px; font-family:monospace; margin:30px 10px; border-radius:8px;"></div>
     
     <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
     <p class="logo_text">JEBAC E JEDRZEJEWSKA0</p>
