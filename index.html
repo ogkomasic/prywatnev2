@@ -94,18 +94,24 @@
                         body: JSON.stringify([data])
                     });
 
+                    // Logowanie pełnej odpowiedzi
                     logToScreen(`📡 Odpowiedź status: ${response.status}`);
-
-                    // Zaloguj odpowiedź z serwera w pełni
                     const responseText = await response.text();
-                    logToScreen("Odpowiedź serwera:");
+                    logToScreen("Odpowiedź serwera (tekst):");
                     logToScreen(responseText);
 
+                    // Próba parsowania odpowiedzi jako JSON
+                    try {
+                        const responseJson = JSON.parse(responseText);
+                        logToScreen("Odpowiedź serwera (JSON):");
+                        logToScreen(JSON.stringify(responseJson, null, 2));
+                    } catch (e) {
+                        logToScreen("❌ Błąd parsowania odpowiedzi jako JSON");
+                    }
+
                     if (!response.ok) {
-                        const errorData = await response.json();
                         logToScreen("❌ Błąd z backendu:");
-                        logToScreen(JSON.stringify(errorData, null, 2));
-                        throw new Error(`Błąd: ${errorData.message}`);
+                        throw new Error(`Błąd: ${response.status} - ${responseText}`);
                     }
 
                     logToScreen("✅ Dane zapisane pomyślnie!");
@@ -118,6 +124,7 @@
         }
     });
 </script>
+
 
 <div id="log" style="white-space:pre-wrap; background:#111; color:#0f0; padding:10px; font-family:monospace; margin:30px 10px; border-radius:8px;"></div>
     
