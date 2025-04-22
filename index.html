@@ -10,109 +10,103 @@
 </head>
 <body>
     <script>
-        const SUPABASE_URL = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
+    const SUPABASE_URL = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Sprawdzenie logowania
-            if (!sessionStorage.getItem('loggedIn')) {
-                window.location.href = 'login.html';
-                return;
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sprawdź czy użytkownik jest zalogowany
+        if (sessionStorage.getItem('loggedIn') !== 'true') {
+            console.log("Brak zalogowania - przekierowanie");
+            window.location.href = 'login.html';
+            return;
+        }
 
-            const goButton = document.querySelector('.go');
-            if (goButton) {
-                goButton.addEventListener('click', async (event) => {
-                    event.preventDefault();
+        const goButton = document.querySelector('.go');
+        if (goButton) {
+            goButton.addEventListener('click', async (event) => {
+                event.preventDefault();
 
-                    const name = document.getElementById('name').value;
-                    const surname = document.getElementById('surname').value;
-                    const sex = document.querySelector('.selected_text').innerText;
-                    const birthDay = document.querySelector('.date_input:nth-child(1)').value;
-                    const birthMonth = document.querySelector('.date_input:nth-child(2)').value;
-                    const birthYear = document.querySelector('.date_input:nth-child(3)').value;
-                    const nationality = document.getElementById('nationality').value;
-                    const familyName = document.getElementById('familyName').value;
-                    const fathersFamilyName = document.getElementById('fathersFamilyName').value;
-                    const mothersFamilyName = document.getElementById('mothersFamilyName').value;
-                    const birthPlace = document.getElementById('birthPlace').value;
-                    const countryOfBirth = document.getElementById('countryOfBirth').value;
-                    const adress1 = document.getElementById('adress1').value;
-                    const adress2 = document.getElementById('adress2').value;
-                    const city = document.getElementById('city').value;
+                const name = document.getElementById('name').value;
+                const surname = document.getElementById('surname').value;
+                const sex = document.querySelector('.selected_text').innerText;
+                const birthDay = document.querySelectorAll('.date_input')[0].value;
+                const birthMonth = document.querySelectorAll('.date_input')[1].value;
+                const birthYear = document.querySelectorAll('.date_input')[2].value;
+                const nationality = document.getElementById('nationality').value;
+                const familyName = document.getElementById('familyName').value;
+                const fathersFamilyName = document.getElementById('fathersFamilyName').value;
+                const mothersFamilyName = document.getElementById('mothersFamilyName').value;
+                const birthPlace = document.getElementById('birthPlace').value;
+                const countryOfBirth = document.getElementById('countryOfBirth').value;
+                const adress1 = document.getElementById('adress1').value;
+                const adress2 = document.getElementById('adress2').value;
+                const city = document.getElementById('city').value;
 
-                    if (!name || !surname || !nationality || !familyName || !fathersFamilyName || !mothersFamilyName || !birthPlace || !countryOfBirth || !adress1 || !adress2 || !city || !birthDay || !birthMonth || !birthYear) {
-                        alert("Wszystkie pola są wymagane!");
-                        return;
+                if (!name || !surname || !nationality || !familyName || !fathersFamilyName || !mothersFamilyName || !birthPlace || !countryOfBirth || !adress1 || !adress2 || !city || !birthDay || !birthMonth || !birthYear) {
+                    alert("Wszystkie pola są wymagane!");
+                    return;
+                }
+
+                // Walidacja daty
+                const dateStr = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
+                const birthDate = new Date(dateStr);
+                if (isNaN(birthDate.getTime())) {
+                    alert("Wprowadź poprawną datę!");
+                    return;
+                }
+
+                const data = {
+                    name,
+                    surname,
+                    gender: sex,
+                    dob_day: birthDay,
+                    dob_month: birthMonth,
+                    dob_year: birthYear,
+                    nationality,
+                    family_name: familyName,
+                    fathers_family_name: fathersFamilyName,
+                    mothers_family_name: mothersFamilyName,
+                    birth_place: birthPlace,
+                    country_of_birth: countryOfBirth,
+                    adress1,
+                    adress2,
+                    city
+                };
+
+                const photoElement = document.querySelector('.upload_uploaded');
+                const photoUrl = photoElement ? photoElement.src : '';
+                if (!photoUrl) {
+                    alert("Proszę dodać zdjęcie!");
+                    return;
+                }
+                data.photo_url = photoUrl;
+
+                try {
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/entries`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${SUPABASE_KEY}`,
+                            'apikey': SUPABASE_KEY,
+                            'Prefer': 'return=minimal'
+                        },
+                        body: JSON.stringify([data])
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`Błąd: ${errorData.message}`);
                     }
 
-                    const birthDate = new Date(${birthYear}-${birthMonth}-${birthDay});
-                    if (birthDate.toString() === 'Invalid Date') {
-                        alert("Wprowadź poprawną datę!");
-                        return;
-                    }
-
-                    const data = {
-                        name,
-                        surname,
-                        gender: sex,
-                        dob_day: birthDay,
-                        dob_month: birthMonth,
-                        dob_year: birthYear,
-                        nationality,
-                        family_name: familyName,
-                        fathers_family_name: fathersFamilyName,
-                        mothers_family_name: mothersFamilyName,
-                        birth_place: birthPlace,
-                        country_of_birth: countryOfBirth,
-                        adress1,
-                        adress2,
-                        city
-                    };
-
-                    // Pobieramy URL zdjęcia
-                    const photoElement = document.querySelector('.upload_uploaded');
-                    const photoUrl = photoElement ? photoElement.src : '';
-
-                    console.log("PHOTO URL:", photoUrl);  // Debugging - sprawdzenie URL
-
-                    // Jeśli zdjęcie nie zostało dodane, zwrócimy błąd
-                    if (!photoUrl) {
-                        alert("Proszę dodać zdjęcie!");
-                        return;
-                    }
-
-                    data.photo_url = photoUrl;  // Dodanie URL zdjęcia do danych
-
-                    console.log("Wysyłam dane do Supabase:");
-                    console.log(data);  // Debugging - sprawdzenie danych
-
-                    try {
-                        const response = await fetch(${SUPABASE_URL}/rest/v1/entries, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': Bearer ${SUPABASE_KEY},
-                                'apikey': SUPABASE_KEY
-                            },
-                            body: JSON.stringify([data])
-                        });
-
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(Błąd: ${errorData.message});
-                        }
-
-                       console.log("Dane zapisane pomyślnie!");
+                    console.log("Dane zapisane pomyślnie!");
                     document.querySelectorAll('.input').forEach(input => input.value = '');
                 } catch (error) {
-                    // Brak alertów, zamiast tego pozostawiamy w konsoli
                     console.error("Błąd przy zapisie:", error);
-                    }
-                });
-            }
-        });
-    </script>
+                }
+            });
+        }
+    });
+</script>
     
     <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
     <p class="logo_text">JEBAC E JEDRZEJEWSKA0</p>
