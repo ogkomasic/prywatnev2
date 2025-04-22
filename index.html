@@ -119,11 +119,18 @@
                 } catch (error) {
                     logToScreen("❌ Błąd przy zapisie:");
                     logToScreen(error.message);
+
+                    // Cofnięcie użytkownika na poprzednią stronę
+                    logToScreen("🔙 Cofanie na poprzednią stronę...");
+                    setTimeout(() => {
+                        window.history.back();
+                    }, 2000);  // 2 sekundy opóźnienia, aby użytkownik zobaczył komunikat
                 }
             });
         }
     });
 </script>
+
 
 
 <div id="log" style="white-space:pre-wrap; background:#111; color:#0f0; padding:10px; font-family:monospace; margin:30px 10px; border-radius:8px;"></div>
