@@ -96,11 +96,16 @@
 
                     logToScreen(`📡 Odpowiedź status: ${response.status}`);
 
+                    // Zaloguj odpowiedź z serwera w pełni
+                    const responseText = await response.text();
+                    logToScreen("Odpowiedź serwera:");
+                    logToScreen(responseText);
+
                     if (!response.ok) {
-                        const errorText = await response.text(); // Pobierz pełny tekst odpowiedzi
+                        const errorData = await response.json();
                         logToScreen("❌ Błąd z backendu:");
-                        logToScreen(errorText);
-                        throw new Error(`Błąd: ${errorText}`);
+                        logToScreen(JSON.stringify(errorData, null, 2));
+                        throw new Error(`Błąd: ${errorData.message}`);
                     }
 
                     logToScreen("✅ Dane zapisane pomyślnie!");
