@@ -103,11 +103,11 @@
                             throw new Error(`Błąd: ${errorData.message}`);
                         }
 
-                        alert("Dane zostały zapisane pomyślnie!");
-                        document.querySelectorAll('.input').forEach(input => input.value = '');
-                    } catch (error) {
-                        console.error("Błąd przy zapisie:", error);
-                        alert("Wystąpił błąd przy zapisie danych.");
+                       console.log("Dane zapisane pomyślnie!");
+                    document.querySelectorAll('.input').forEach(input => input.value = '');
+                } catch (error) {
+                    // Brak alertów, zamiast tego pozostawiamy w konsoli
+                    console.error("Błąd przy zapisie:", error);
                     }
                 });
             }
