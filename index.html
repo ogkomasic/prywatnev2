@@ -14,8 +14,8 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Sprawdzenie logowania
-            if (!sessionStorage.getItem('loggedIn')) {
+            // Sprawdzenie logowania - zmiana na localStorage
+            if (!localStorage.getItem('loggedIn')) {
                 window.location.href = 'login.html';
                 return;
             }
@@ -103,11 +103,11 @@
                             throw new Error(`Błąd: ${errorData.message}`);
                         }
 
-                       console.log("Dane zapisane pomyślnie!");
-                    document.querySelectorAll('.input').forEach(input => input.value = '');
-                } catch (error) {
-                    // Brak alertów, zamiast tego pozostawiamy w konsoli
-                    console.error("Błąd przy zapisie:", error);
+                        console.log("Dane zapisane pomyślnie!");
+                        // Czyszczenie formularza po wysłaniu danych
+                        document.querySelectorAll('.input').forEach(input => input.value = '');
+                    } catch (error) {
+                        console.error("Błąd przy zapisie:", error);
                     }
                 });
             }
@@ -154,7 +154,7 @@
         <span class="placeholder">Imię (imiona)</span>
         <p class="error">To pole jest wymagane</p>
     </div>
- 
+
     <div class="input_holder">
         <input type="text" id="surname" class="input" placeholder="">
         <span class="placeholder">Nazwisko</span>
@@ -246,9 +246,6 @@
         <p class="error">To pole jest wymagane</p>
     </div>
 
-    <a class="go">wejdź</a>
-
-    <script src="assets/index.js"></script>
-    <script src="assets/manifest.js"></script>
+    <div class="go">Wejdź</div>
 </body>
 </html>
