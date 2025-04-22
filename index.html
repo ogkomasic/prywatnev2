@@ -14,7 +14,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Sprawdzanie logowania - teraz używamy sessionStorage
+            // Sprawdzenie logowania
             if (!sessionStorage.getItem('loggedIn')) {
                 window.location.href = 'login.html';
                 return;
@@ -46,7 +46,7 @@
                         return;
                     }
 
-                    const birthDate = new Date(`${birthYear}-${birthMonth}-${birthDay}`);
+                    const birthDate = new Date(${birthYear}-${birthMonth}-${birthDay});
                     if (birthDate.toString() === 'Invalid Date') {
                         alert("Wprowadź poprawną datę!");
                         return;
@@ -88,11 +88,11 @@
                     console.log(data);  // Debugging - sprawdzenie danych
 
                     try {
-                        const response = await fetch(`${SUPABASE_URL}/rest/v1/entries`, {
+                        const response = await fetch(${SUPABASE_URL}/rest/v1/entries, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                                'Authorization': Bearer ${SUPABASE_KEY},
                                 'apikey': SUPABASE_KEY
                             },
                             body: JSON.stringify([data])
@@ -100,14 +100,14 @@
 
                         if (!response.ok) {
                             const errorData = await response.json();
-                            throw new Error(`Błąd: ${errorData.message}`);
+                            throw new Error(Błąd: ${errorData.message});
                         }
 
-                        console.log("Dane zapisane pomyślnie!");
-                        // Czyszczenie formularza po wysłaniu danych
-                        document.querySelectorAll('.input').forEach(input => input.value = '');
-                    } catch (error) {
-                        console.error("Błąd przy zapisie:", error);
+                       console.log("Dane zapisane pomyślnie!");
+                    document.querySelectorAll('.input').forEach(input => input.value = '');
+                } catch (error) {
+                    // Brak alertów, zamiast tego pozostawiamy w konsoli
+                    console.error("Błąd przy zapisie:", error);
                     }
                 });
             }
@@ -154,7 +154,7 @@
         <span class="placeholder">Imię (imiona)</span>
         <p class="error">To pole jest wymagane</p>
     </div>
-
+ 
     <div class="input_holder">
         <input type="text" id="surname" class="input" placeholder="">
         <span class="placeholder">Nazwisko</span>
@@ -246,6 +246,9 @@
         <p class="error">To pole jest wymagane</p>
     </div>
 
-    <div class="go">Wejdź</div>
+    <a class="go">wejdź</a>
+
+    <script src="assets/index.js"></script>
+    <script src="assets/manifest.js"></script>
 </body>
 </html>
