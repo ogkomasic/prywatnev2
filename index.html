@@ -15,7 +15,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Sprawdzenie logowania - zmiana na localStorage
-            if (!localStorage.getItem('loggedIn')) {
+            if (!sessionStorage.getItem('loggedIn')) {
                 window.location.href = 'login.html';
                 return;
             }
