@@ -14,7 +14,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Sprawdzenie logowania - zmiana na localStorage
+            // Sprawdzanie logowania - teraz używamy sessionStorage
             if (!sessionStorage.getItem('loggedIn')) {
                 window.location.href = 'login.html';
                 return;
