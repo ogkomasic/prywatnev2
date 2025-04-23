@@ -9,12 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.11.0/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-    <script>
+   <script>
     const SUPABASE_URL = 'https://dvvugjmnjjhhafqcdpmt.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dnVnam1uampoaGFmcWNkcG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MzQ3OTgsImV4cCI6MjA2MDIxMDc5OH0.0yE5bIECJYq60S35yUhZq5g6EPLNujo0iZ4QQXzyrL4';
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Sprawdzenie logowania
+    document.addEventListener('DOMContentLoaded', function () {
         if (!sessionStorage.getItem('loggedIn')) {
             window.location.href = 'login.html';
             return;
@@ -70,53 +69,53 @@
                     city
                 };
 
-                // Pobieramy URL zdjęcia
                 const photoElement = document.querySelector('.upload_uploaded');
                 const photoUrl = photoElement ? photoElement.src : '';
-
-                console.log("PHOTO URL:", photoUrl);  // Debugging - sprawdzenie URL
-
-                // Jeśli zdjęcie nie zostało dodane, zwrócimy błąd
                 if (!photoUrl) {
                     alert("Proszę dodać zdjęcie!");
                     return;
                 }
 
-                data.photo_url = photoUrl;  // Dodanie URL zdjęcia do danych
+                data.photo_url = photoUrl;
 
-                console.log("Wysyłam dane do Supabase:");
-                console.log(data);  // Debugging - sprawdzenie danych
+                console.log("📡 Wysyłam dane do Supabase:", data);
 
                 try {
                     const response = await fetch(`${SUPABASE_URL}/rest/v1/entries`, {
                         method: 'POST',
+                        mode: 'cors', // 💡 ważne!
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${SUPABASE_KEY}`,
                             'apikey': SUPABASE_KEY,
-                            'Origin': window.location.origin  // Nagłówek Origin
+                            'Prefer': 'return=minimal'
                         },
                         body: JSON.stringify([data])
                     });
 
+                    console.log("📡 Status odpowiedzi:", response.status);
+
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(`Błąd: ${errorData.message}`);
+                        let errorMessage = 'Nieznany błąd';
+                        try {
+                            const errorData = await response.json();
+                            errorMessage = JSON.stringify(errorData, null, 2);
+                        } catch (_) {}
+                        throw new Error(errorMessage);
                     }
 
-                   console.log("Dane zapisane pomyślnie!");
-                   document.querySelectorAll('.input').forEach(input => input.value = '');
+                    alert("✅ Dane zapisane pomyślnie!");
+                    document.querySelectorAll('.input').forEach(input => input.value = '');
                 } catch (error) {
-                    // Brak alertów, zamiast tego pozostawiamy w konsoli
-                    console.error("Błąd przy zapisie:", error);
+                    console.error("❌ Błąd przy zapisie:", error);
+                    alert("❌ Błąd przy zapisie: " + error.message);
                 }
             });
         }
     });
 </script>
 
-    
-    <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
+   <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
     <p class="logo_text">JEBAC E JEDRZEJEWSKA0</p>
     <p class="warning">JEBAC TEGO SHONA</p>
 
