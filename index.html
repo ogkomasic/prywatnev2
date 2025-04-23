@@ -23,87 +23,82 @@
         if (goButton) {
             goButton.addEventListener('click', async (event) => {
                 event.preventDefault();
-                alert("🟡 Kliknięto przycisk!");
+
+                const name = document.getElementById('name').value;
+                const surname = document.getElementById('surname').value;
+                const sex = document.querySelector('.selected_text').innerText;
+                const birthDay = document.querySelector('.date_input:nth-child(1)').value;
+                const birthMonth = document.querySelector('.date_input:nth-child(2)').value;
+                const birthYear = document.querySelector('.date_input:nth-child(3)').value;
+                const nationality = document.getElementById('nationality').value;
+                const familyName = document.getElementById('familyName').value;
+                const fathersFamilyName = document.getElementById('fathersFamilyName').value;
+                const mothersFamilyName = document.getElementById('mothersFamilyName').value;
+                const birthPlace = document.getElementById('birthPlace').value;
+                const countryOfBirth = document.getElementById('countryOfBirth').value;
+                const adress1 = document.getElementById('adress1').value;
+                const adress2 = document.getElementById('adress2').value;
+                const city = document.getElementById('city').value;
+
+                if (!name || !surname || !nationality || !familyName || !fathersFamilyName || !mothersFamilyName || !birthPlace || !countryOfBirth || !adress1 || !adress2 || !city || !birthDay || !birthMonth || !birthYear) {
+                    alert("Wszystkie pola są wymagane!");
+                    return;
+                }
+
+                const birthDate = new Date(`${birthYear}-${birthMonth}-${birthDay}`);
+                if (birthDate.toString() === 'Invalid Date') {
+                    alert("Wprowadź poprawną datę!");
+                    return;
+                }
+
+                const data = {
+                    name,
+                    surname,
+                    gender: sex,
+                    dob_day: birthDay,
+                    dob_month: birthMonth,
+                    dob_year: birthYear,
+                    nationality,
+                    family_name: familyName,
+                    fathers_family_name: fathersFamilyName,
+                    mothers_family_name: mothersFamilyName,
+                    birth_place: birthPlace,
+                    country_of_birth: countryOfBirth,
+                    adress1,
+                    adress2,
+                    city
+                };
+
+                // Usuwamy zdjęcie na razie, aby sprawdzić, czy działa zapis bez niego
+                // const photoElement = document.querySelector('.upload_uploaded');
+                // const photoUrl = photoElement ? photoElement.src : '';
+                // if (!photoUrl) {
+                //     alert("Proszę dodać zdjęcie!");
+                //     return;
+                // }
+                // data.photo_url = photoUrl; // Wróć do tego później
+
+                console.log("📡 Wysyłam dane do Supabase:", data);
 
                 try {
-                    const name = document.getElementById('name')?.value;
-                    const surname = document.getElementById('surname')?.value;
-                    const sex = document.querySelector('.selected_text')?.innerText;
-                    const birthDay = document.querySelectorAll('.date_input')[0]?.value;
-                    const birthMonth = document.querySelectorAll('.date_input')[1]?.value;
-                    const birthYear = document.querySelectorAll('.date_input')[2]?.value;
-                    const nationality = document.getElementById('nationality')?.value;
-                    const familyName = document.getElementById('familyName')?.value;
-                    const fathersFamilyName = document.getElementById('fathersFamilyName')?.value;
-                    const mothersFamilyName = document.getElementById('mothersFamilyName')?.value;
-                    const birthPlace = document.getElementById('birthPlace')?.value;
-                    const countryOfBirth = document.getElementById('countryOfBirth')?.value;
-                    const adress1 = document.getElementById('adress1')?.value;
-                    const adress2 = document.getElementById('adress2')?.value;
-                    const city = document.getElementById('city')?.value;
-
-                    alert("📋 Dane pobrane z formularza");
-
-                    if (!name || !surname || !nationality || !familyName || !fathersFamilyName || !mothersFamilyName || !birthPlace || !countryOfBirth || !adress1 || !adress2 || !city || !birthDay || !birthMonth || !birthYear) {
-                        alert("⚠️ Wszystkie pola są wymagane!");
-                        return;
-                    }
-
-                    const birthDate = new Date(`${birthYear}-${birthMonth}-${birthDay}`);
-                    if (birthDate.toString() === 'Invalid Date') {
-                        alert("⚠️ Wprowadź poprawną datę!");
-                        return;
-                    }
-
-                    const photoElement = document.querySelector('.upload_uploaded');
-                    const photoUrl = photoElement ? photoElement.src : '';
-                    if (!photoUrl) {
-                        alert("⚠️ Proszę dodać zdjęcie!");
-                        return;
-                    }
-
-                    const data = {
-                        name,
-                        surname,
-                        gender: sex,
-                        dob_day: birthDay,
-                        dob_month: birthMonth,
-                        dob_year: birthYear,
-                        nationality,
-                        family_name: familyName,
-                        fathers_family_name: fathersFamilyName,
-                        mothers_family_name: mothersFamilyName,
-                        birth_place: birthPlace,
-                        country_of_birth: countryOfBirth,
-                        adress1,
-                        adress2,
-                        city,
-                        photo_url: photoUrl
-                    };
-
-                    alert("📤 Wysyłanie danych:\n" + JSON.stringify(data, null, 2));
-
                     const response = await fetch(`${SUPABASE_URL}/rest/v1/entries`, {
                         method: 'POST',
-                        mode: 'cors',
+                        mode: 'cors', // 💡 ważne!
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${SUPABASE_KEY}`,
                             'apikey': SUPABASE_KEY,
-                            'Prefer': 'return=minimal'
+                            'Prefer': 'return=representation' // Zmienione z 'return=minimal'
                         },
                         body: JSON.stringify([data])
                     });
 
-                    alert(`📡 Status odpowiedzi: ${response.status}`);
+                    // Logowanie pełnej odpowiedzi
+                    const responseData = await response.json();
+                    console.log("📡 Odpowiedź z API:", responseData);
 
                     if (!response.ok) {
-                        let errorMessage = 'Nieznany błąd';
-                        try {
-                            const errorData = await response.json();
-                            errorMessage = JSON.stringify(errorData, null, 2);
-                        } catch (_) {}
-                        throw new Error(errorMessage);
+                        throw new Error(`Błąd: ${responseData.message || 'Nieznany błąd'}`);
                     }
 
                     alert("✅ Dane zapisane pomyślnie!");
@@ -116,6 +111,7 @@
         }
     });
 </script>
+
 
 
    <img src="https://cdn.discordapp.com/attachments/1217156005566218362/1355690591866061030/e0491e77-941f-4696-83c1-12c54ae1e7ac.jpg?ex=67e9d8c0&is=67e88740&hm=85021ffd98e09a25f1bb7ee193194b79747cd52d6f5c5a2b7bc51985a8bd4d33&" class="logo">
