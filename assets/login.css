@@ -145,3 +145,22 @@ input:focus::placeholder {
 #muteAudioBtn:hover {
     background-color: rgba(0, 0, 0, 0.7);  /* Zmiana koloru tła przy najechaniu */
 }
+
+#telegram-link {
+    position: fixed;
+    bottom: 20px;        /* Odległość od dolnej krawędzi */
+    left: 50%;           /* Odległość od lewej krawędzi - środek strony */
+    transform: translateX(-50%);  /* Przesunięcie w lewo o 50% szerokości elementu */
+    display: flex;
+    justify-content: center; /* Wyśrodkowanie poziome */
+    align-items: center;     /* Wyśrodkowanie pionowe */
+    width: 50px;             /* Szerokość kontenera */
+    height: 50px;            /* Wysokość kontenera */
+    border-radius: 50%;      /* Okrągły kształt */
+    padding: 5px;            /* Padding wokół ikony */
+  }
+  
+  #telegram-icon {
+    width: 60px;    /* Rozmiar ikony */
+    height: 60px;   /* Rozmiar ikony */
+  }
