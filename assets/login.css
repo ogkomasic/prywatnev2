@@ -1,0 +1,147 @@
+body {
+    font-family: Helvetica, sans-serif;
+    background-image: url('assets/29876134-30a2-4a0d-b259-85e1e835bb70.mp4');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  #bg-video {
+    position: fixed;  /* Ustawiamy wideo jako tło */
+    top: 0;
+    left: 0;
+    width: 100%;       /* Wideo rozciąga się na całą szerokość */
+    height: 100%;      /* Wideo rozciąga się na całą wysokość */
+    object-fit: cover; /* Wideo przycięte, żeby zachować proporcje */
+    z-index: -1;       /* Ustawiamy wideo w tle */
+  }
+  
+  /* Styl strony */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Helvetica, sans-serif;
+  }
+
+  .container {
+    background-color: rgba(0, 0, 0, 0);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #fff;
+  }
+
+  input[type="password"] {
+    width: 94%;
+    padding: 12px;
+    margin: 12px 0;
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid white;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
+  input::placeholder {
+    color: white; /* Zmiana koloru placeholdera na szary */
+    font-style: 'Poppins', sans-serif; /* Zmiana stylu czcionki na kursywę */
+    font-weight: 600;
+    text-align: center;
+}
+
+input:focus::placeholder {
+    color: black; /* Zmiana koloru placeholdera na czarny po kliknięciu w pole */
+}
+
+  input:hover{
+    color: black;
+    background-color: white;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: rgba(0, 0, 0, 0); /* Przezroczyste tło */
+    border: 2px solid white; /* Czarne obramowanie o szerokości 4px */
+    color: white;
+    border-radius: 8px; /* Zaokrąglone rogi */
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+  }
+
+  button:hover {
+    color: black;
+    background-color: white;
+  }
+
+  #error-message {
+    text-align: center;
+    color: red;
+    shadow
+    font-weight: bold;
+    display: none;
+  }
+
+  p {
+    text-align: center;
+    color: white; /* Kolor tekstu */
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); /* Cień wokół tekstu (biały z przezroczystością) */
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+  }
+
+  #playAudioBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+/* Styl dla przycisku w rogu po najechaniu */
+#playAudioBtn:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#muteAudioBtn {
+    position: fixed;
+    top: 20px;   /* Odstęp od góry */
+    left: 20px;  /* Odstęp od lewej krawędzi */
+    background-color: rgba(0, 0, 0, 0.5);  /* Ciemne tło */
+    color: white;
+    border: white;
+    padding: 10px;  /* Padding dla przycisku */
+    border-radius: 50%;  /* Zaokrąglony przycisk */
+    font-size: 20px;  /* Wielkość ikony */
+    cursor: pointer;
+    z-index: 1000;  /* Przyciski powinny być na wierzchu */
+    width: auto;   /* Usuń rozciąganie na całą szerokość */
+    height: auto;  /* Usuń rozciąganie na całą wysokość */
+    display: inline-flex;   /* Flexbox dla lepszego wyśrodkowania ikony */
+    align-items: center;  /* Wyśrodkowanie pionowe */
+    justify-content: center;  /* Wyśrodkowanie poziome */
+}
+
+#muteAudioBtn:hover {
+    background-color: rgba(0, 0, 0, 0.7);  /* Zmiana koloru tła przy najechaniu */
+}

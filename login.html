@@ -1,79 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/login.css"/>
+  <link rel="icon" type="image/x-icon" href="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Dodanie Font Awesome do strony -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-
-    input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    #error-message {
-      text-align: center;
-      color: red;
-      font-weight: bold;
-      display: none;
-    }
-
-    p {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-  </style>
 </head>
 <body>
+
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="assets/29876134-30a2-4a0d-b259-85e1e835bb70 (1).mp4" type="video/mp4">
+    Twoja przeglądarka nie obsługuje wideo.
+  </video>
+
+  <audio id="myAudio" loop>
+    <source src="assets/FRIENDLY THUG 52NGG - STOP XAN.mp3" type="audio/mpeg">
+    Twoja przeglądarka nie obsługuje elementu audio.
+  </audio>
+
+  <!-- Przycisk z ikoną głośnika -->
+  <button id="muteAudioBtn" title="Wycisz/Załącz dźwięk">
+    <i class="fas fa-volume-up"></i> <!-- Ikona głośnika -->
+  </button>
+
+  <script>
+    const muteButton = document.getElementById('muteAudioBtn');
+    const audio = document.getElementById('myAudio');
+    
+    muteButton.addEventListener('click', () => {
+      // Zmiana stanu wyciszenia
+      if (audio.muted) {
+        audio.muted = false;
+        muteButton.innerHTML = '<i class="fas fa-volume-up"></i>';  // Ikona głośnika włączona
+      } else {
+        audio.muted = true;
+        muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>';  // Ikona głośnika wyciszona
+      }
+    });
+
+    // Odtwarzanie muzyki po kliknięciu gdziekolwiek
+    document.addEventListener('click', () => {
+      audio.play().catch(err => {
+        console.log("Nie udało się odtworzyć audio:", err);
+      });
+    }, { once: true });
+  </script>
+
   <div class="container">
     <h1>JEBAC WAS KURWY NIE MA JUZ NIC ZA DARMO</h1>
-      <p style="color: red;">APLIKACJA JEST STWORZONA W CELACH EDUKACYJNYCH</p>
+      <p>MADE BY OGKOMASIC</p>
     <form id="loginForm">
-      <input type="password" id="password" required placeholder="Enter password">
-      <button type="submit">Zaloguj się</button>
+      <input type="password" id="password" required placeholder="Wpisz hasło">
+      <button type="submit">ZALOGUJ SIĘ</button>
     </form>
     <p id="error-message">Błędne hasło lub hasło zostało już użyte!</p>
   </div>
@@ -137,5 +119,6 @@
       });
     });
   </script>
+  
 </body>
 </html>
