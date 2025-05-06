@@ -1,39 +1,10 @@
-var params = new URLSearchParams(window.location.search);
-var id = 0;
-var sex = "m"
-var upload = document.querySelector(".upload");
-var save = document.querySelector(".save");
-
-if (params.has("id")) {
-    id = parseInt(params.get("id"));
-
-    setUpload("/images?" + 'id=' + id);
-    fetch('/get/card?' + 'id=' + id)
-    .then(response => response.json())
-    .then(result => {
-        var classes = upload.classList;
-        classes.remove("error_shown")
-        classes.add("upload_loaded");
-        classes.remove("upload_loading");
-
-        setSelectorOption(result['sex'])
-
-        document.querySelectorAll("input").forEach((input) => {
-            var value = result[input.id];
-            if (value) {
-                input.value = value;
-            }
-        })
-    })
-}
 
 var selector = document.querySelector(".selector_box");
 selector.addEventListener('click', () => {
-    var classes = selector.classList;
-    if (classes.contains("selector_open")) {
-        classes.remove("selector_open")
-    } else {
-        classes.add("selector_open")
+    if (selector.classList.contains("selector_open")){
+        selector.classList.remove("selector_open")
+    }else{
+        selector.classList.add("selector_open")
     }
 })
 
@@ -43,30 +14,28 @@ document.querySelectorAll(".date_input").forEach((element) => {
     })
 })
 
+var sex = "m"
+
 document.querySelectorAll(".selector_option").forEach((option) => {
     option.addEventListener('click', () => {
-        setSelectorOption(option.id)
+        sex = option.id;
+        document.querySelector(".selected_text").innerHTML = option.innerHTML;
     })
 })
 
-function setSelectorOption(id) {
-    sex = id;
-    document.querySelectorAll(".selector_option").forEach((option) => {
-        if (option.id === id) {
-            document.querySelector(".selected_text").innerHTML = option.innerHTML;
-        }
-    })
-}
+var upload = document.querySelector(".upload");
 
 var imageInput = document.createElement("input");
 imageInput.type = "file";
 imageInput.accept = ".jpeg,.png,.gif";
 
 document.querySelectorAll(".input_holder").forEach((element) => {
+
     var input = element.querySelector(".input");
     input.addEventListener('click', () => {
         element.classList.remove("error_shown");
     })
+
 });
 
 upload.addEventListener('click', () => {
@@ -75,101 +44,112 @@ upload.addEventListener('click', () => {
 });
 
 imageInput.addEventListener('change', (event) => {
+
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
 
     upload.removeAttribute("selected")
 
     var file = imageInput.files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
-        var classes = upload.classList;
-        var url = event.target.result;
-        classes.remove("error_shown")
-        classes.add("upload_loaded");
-        classes.remove("upload_loading");
-        setUpload(url);
-    }
-})
+    var data = new FormData();
+    data.append("image", file);
 
-function setUpload(url) {
-    upload.setAttribute("selected", url);
-    upload.querySelector(".upload_uploaded").src = url;
-}
-
-document.querySelectorAll('.input').forEach((element) => {
-    element.addEventListener('click', () => {
-        element.classList.remove('error_shown')
+    fetch('	https://api.imgur.com/3/image' ,{
+        method: 'POST',
+        headers: {
+            'Authorization': 'Client-ID c8c28d402435402'
+        },
+        body: data
     })
+    .then(result => result.json())
+    .then(response => {
+        
+        var url = response.data.link;
+        upload.classList.remove("error_shown")
+        upload.setAttribute("selected", url);
+        upload.classList.add("upload_loaded");
+        upload.classList.remove("upload_loading");
+        upload.querySelector(".upload_uploaded").src = url;
+
+    })
+
 })
 
-save.addEventListener('click', () => {
-    if (!save.classList.contains("image_button_loading")) {
-        var empty = [];
-        var data = {};
+document.querySelector(".go").addEventListener('click', () => {
 
-        data["sex"] = sex;
-        if (!upload.hasAttribute("selected")) {
-            empty.push(upload);
-            upload.classList.add("error_shown")
-        } else {
-            data['image'] = upload.getAttribute("selected");
-        }
+    var empty = [];
 
-        var dateEmpty = false;
-        document.querySelectorAll(".date_input").forEach((element) => {
-            if (isEmpty(element.value)) {
-                dateEmpty = true;
-            } else {
-                data[element.id] = parseInt(element.value)
-            }
-        })
+    var params = new URLSearchParams();
 
-        if (dateEmpty) {
-            var dateElement = document.querySelector(".date");
-            dateElement.classList.add("error_shown");
-            empty.push(dateElement);
-        }
-
-        document.querySelectorAll(".input_holder").forEach((element) => {
-            var input = element.querySelector(".input");
-
-            if (isEmpty(input.value)) {
-                empty.push(element);
-                input.classList.add("error_shown");
-            } else {
-                data[input.id] = input.value
-            }
-        })
-
-        if (empty.length != 0) {
-            empty[0].scrollIntoView();
-        } else {
-            save.classList.add("image_button_loading");
-
-            // Zapisujemy dane w localStorage przed przekierowaniem
-            localStorage.setItem("formData", JSON.stringify(data));
-
-            // Wysyłamy dane na serwer
-            fetch('/submit', {
-                method: 'POST',
-                body: JSON.stringify({
-                    'id': id,
-                    'data': data
-                })
-            })
-            .then(() => {
-                save.classList.remove("image_button_loading");
-                // Przekierowanie na card.html
-                const urlParams = new URLSearchParams(data).toString(); // Tworzymy parametry z danych
-                location.href = '/card.html?' + urlParams; // Przekierowanie na card.html
-            })
-        }
+    params.set("sex", sex)
+    if (!upload.hasAttribute("selected")){
+        empty.push(upload);
+        upload.classList.add("error_shown")
+    }else{
+        params.set("image", upload.getAttribute("selected"))
     }
+
+    var birthday = "";
+    var dateEmpty = false;
+    document.querySelectorAll(".date_input").forEach((element) => {
+        birthday = birthday + "." + element.value
+        if (isEmpty(element.value)){
+            dateEmpty = true;
+        }
+    })
+
+    birthday = birthday.substring(1);
+
+    if (dateEmpty){
+        var dateElement = document.querySelector(".date");
+        dateElement.classList.add("error_shown");
+        empty.push(dateElement);
+    }else{
+        params.set("birthday", birthday)
+    }
+
+    document.querySelectorAll(".input_holder").forEach((element) => {
+
+        var input = element.querySelector(".input");
+
+        if (isEmpty(input.value)){
+            empty.push(element);
+            element.classList.add("error_shown");
+        }else{
+            params.set(input.id, input.value)
+        }
+
+    })
+
+    if (empty.length != 0){
+        empty[0].scrollIntoView();
+    }else{
+
+        forwardToId(params);
+    }
+
 });
 
-function isEmpty(value) {
-    let pattern = /^\s*$/;
+function isEmpty(value){
+
+    let pattern = /^\s*$/
     return pattern.test(value);
+
 }
+
+function forwardToId(params){
+
+    location.href = "id.html?" + params;
+
+}
+
+var guide = document.querySelector(".guide_holder");
+guide.addEventListener('click', () => {
+
+    if (guide.classList.contains("unfolded")){
+        guide.classList.remove("unfolded");
+    }else{
+        guide.classList.add("unfolded");
+    }
+
+})
