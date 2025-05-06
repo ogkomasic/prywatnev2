@@ -1,11 +1,15 @@
 <head>
     <title>mObywatel</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="assets/documents.css">
-    <link rel="stylesheet" href="assets/main.css">
-    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="apple-touch-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="shortcut icon" href="https://i.imgur.com/n4zJhma.png">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="https://fobywatel.xyz/assets/documents.css">
+    <link rel="stylesheet" href="https://fobywatel.xyz/assets/main.css">
+    <link rel="stylesheet" href="https://fobywatel.xyz/assets/flow.css">
+    <link rel="icon" type="image/x-icon" href=https://fobywatel.xyz/"assets/images/logo.png">
+    <link rel="apple-touch-icon" href="assets/images/logo.png">
+    <link rel="shortcut icon" href="assets/images/logo.png">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
@@ -36,19 +40,23 @@
         </div>
     </div>
 
+    <div class="top_slide_bar">
+        <div class="top_action_grid">
+            <p class="top_action_button">Dodaj</p>
+            <p class="top_action_button">Edytuj</p>
+        </div>
+        <p class="main_page_title">Dokumenty</p>
+    </div>
     <div class="container">
-        <p class="action_add action">Dodaj</p>
-        <p class="action_edit action">Edytuj</p>
-        <p class="main_title">Dokumenty</p>
         <div class="search_grid">
-            <img class="search_icon" src="https://i.imgur.com/tQTUvKY.png">
+            <img class="search_icon" src="https://fobywatel.xyz/assets/images/search.png">
             <input class="search" placeholder="Szukaj">
         </div>
-        <p class="title">Na pulpicie</p>
-        <div class="card" onclick="sendTo('card')">
-            <img class="human" src="https://i.imgur.com/L7PU7Xk.png">
-            <p class="title">mDowód</p>
-            <img class="arrow" src="https://i.imgur.com/Y88ZqRS.png">
+        <p class="title" style="margin-top: 30px;">Na pulpicie</p>
+        <div class="card" onclick="sendTo('card', null, 'documents')">
+            <img class="human" src="https://fobywatel.xyz/assets/images/human.png">
+            <p class="title" style="font-size: 20px;">mDowód</p>
+            <img class="arrow" src="https://fobywatel.xyz/assets/images/arrow_light.png">
         </div>
         <p class="title">Pozostałe</p>
         <div class="other">
@@ -59,4 +67,6 @@
 
     <script src="assets/bar.js"></script>
     <script src="assets/manifest.js"></script>
+    <script src="https://fobywatel.xyz/assets/cache.js"></script>
+    <script src="https://fobywatel.xyz/assets/flow.js"></script>
 </body>
