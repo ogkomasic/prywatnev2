@@ -1,60 +1,28 @@
-var params = new URLSearchParams(window.location.search);
-var id = 0;
-var sex = "m";
-var upload = document.querySelector(".upload");
-var save = document.querySelector(".save");
-
-if (params.has("id")) {
-    id = parseInt(params.get("id"));
-    var authString = 'id=' + id;
-
-    setUpload("/images?" + authString);
-    fetch('/get/card?' + authString)
-        .then(response => response.json())
-        .then(result => {
-            var classes = upload.classList;
-            classes.remove("error_shown");
-            classes.add("upload_loaded");
-            classes.remove("upload_loading");
-
-            setSelectorOption(result['sex']);
-
-            document.querySelectorAll("input").forEach((input) => {
-                var value = result[input.id];
-                if (value) {
-                    input.value = value;
-                }
-            });
-        });
-}
-
 var selector = document.querySelector(".selector_box");
 selector.addEventListener('click', () => {
-    var classes = selector.classList;
-    classes.toggle("selector_open");
-});
+    if (selector.classList.contains("selector_open")) {
+        selector.classList.remove("selector_open")
+    } else {
+        selector.classList.add("selector_open")
+    }
+})
 
 document.querySelectorAll(".date_input").forEach((element) => {
     element.addEventListener('click', () => {
-        document.querySelector(".date").classList.remove("error_shown");
-    });
-});
+        document.querySelector(".date").classList.remove("error_shown")
+    })
+})
+
+var sex = "m"
 
 document.querySelectorAll(".selector_option").forEach((option) => {
     option.addEventListener('click', () => {
-        setSelectorOption(option.id);
-    });
-});
+        sex = option.id;
+        document.querySelector(".selected_text").innerHTML = option.innerHTML;
+    })
+})
 
-function setSelectorOption(id) {
-    sex = id;
-    document.querySelectorAll(".selector_option").forEach((option) => {
-        if (option.id === id) {
-            document.querySelector(".selected_text").innerHTML = option.innerHTML;
-        }
-    });
-}
-
+var upload = document.querySelector(".upload");
 var imageInput = document.createElement("input");
 imageInput.type = "file";
 imageInput.accept = ".jpeg,.png,.gif";
@@ -63,109 +31,97 @@ document.querySelectorAll(".input_holder").forEach((element) => {
     var input = element.querySelector(".input");
     input.addEventListener('click', () => {
         element.classList.remove("error_shown");
-    });
+    })
 });
 
 upload.addEventListener('click', () => {
     imageInput.click();
-    upload.classList.remove("error_shown");
+    upload.classList.remove("error_shown")
 });
 
 imageInput.addEventListener('change', (event) => {
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
+
     upload.removeAttribute("selected");
 
     var file = imageInput.files[0];
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (event) => {
-        var classes = upload.classList;
         var url = event.target.result;
-        classes.remove("error_shown");
-        classes.add("upload_loaded");
-        classes.remove("upload_loading");
-        setUpload(url);
-    };
-});
-
-function setUpload(url) {
-    upload.setAttribute("selected", url);
-    upload.querySelector(".upload_uploaded").src = url;
-}
-
-document.querySelectorAll('.input').forEach((element) => {
-    element.addEventListener('click', () => {
-        element.classList.remove('error_shown');
-    });
-});
-
-save.addEventListener('click', () => {
-    if (!save.classList.contains("image_button_loading")) {
-        var empty = [];
-        var data = {};
-
-        data["sex"] = sex;
-        if (!upload.hasAttribute("selected")) {
-            empty.push(upload);
-            upload.classList.add("error_shown");
-        } else {
-            data['image'] = upload.getAttribute("selected");
-        }
-
-        var dateEmpty = false;
-        document.querySelectorAll(".date_input").forEach((element) => {
-            if (isEmpty(element.value)) {
-                dateEmpty = true;
-            } else {
-                data[element.id] = parseInt(element.value);
-            }
-        });
-
-        if (dateEmpty) {
-            var dateElement = document.querySelector(".date");
-            dateElement.classList.add("error_shown");
-            empty.push(dateElement);
-        }
-
-        document.querySelectorAll(".input_holder").forEach((element) => {
-            var input = element.querySelector(".input");
-
-            if (isEmpty(input.value)) {
-                empty.push(element);
-                input.classList.add("error_shown");
-            } else {
-                data[input.id] = input.value;
-            }
-        });
-
-        if (empty.length != 0) {
-            empty[0].scrollIntoView();
-        } else {
-            save.classList.add("image_button_loading");
-            fetch('/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'id': id,
-                    'data': data
-                })
-            })
-            .then(() => {
-                save.classList.remove("image_button_loading");
-                location.href = '/id';
-            })
-            .catch(error => {
-                console.error("Błąd przy zapisie:", error);
-                save.classList.remove("image_button_loading");
-                alert("Wystąpił błąd podczas zapisu.");
-            });
-        }
+        upload.setAttribute("selected", url);
+        upload.classList.remove("error_shown");
+        upload.classList.add("upload_loaded");
+        upload.classList.remove("upload_loading");
+        upload.querySelector(".upload_uploaded").src = url;
     }
 });
 
 function isEmpty(value) {
-    return /^\s*$/.test(value);
+    let pattern = /^\s*$/;
+    return pattern.test(value);
 }
+
+// ZAPISZ — zbierz dane i przejdź do id.html
+var save = document.querySelector(".save");
+save.addEventListener('click', () => {
+    var empty = [];
+    var params = new URLSearchParams();
+
+    params.set("sex", sex);
+
+    if (!upload.hasAttribute("selected")) {
+        empty.push(upload);
+        upload.classList.add("error_shown");
+    } else {
+        params.set("image", upload.getAttribute("selected"));
+    }
+
+    let birthday = "";
+    let dateEmpty = false;
+
+    document.querySelectorAll(".date_input").forEach((element) => {
+        birthday += "." + element.value;
+        if (isEmpty(element.value)) {
+            dateEmpty = true;
+        }
+    });
+
+    birthday = birthday.substring(1);
+
+    if (dateEmpty) {
+        const dateElement = document.querySelector(".date");
+        dateElement.classList.add("error_shown");
+        empty.push(dateElement);
+    } else {
+        params.set("birthday", birthday);
+    }
+
+    document.querySelectorAll(".input_holder").forEach((element) => {
+        const input = element.querySelector(".input");
+
+        if (isEmpty(input.value)) {
+            empty.push(element);
+            element.classList.add("error_shown");
+        } else {
+            params.set(input.id, input.value);
+        }
+    });
+
+    if (empty.length !== 0) {
+        empty[0].scrollIntoView();
+    } else {
+        location.href = "id.html?" + params.toString();
+    }
+});
+
+// Pomocnik: rozwijana instrukcja
+var guide = document.querySelector(".guide_holder");
+guide.addEventListener('click', () => {
+    if (guide.classList.contains("unfolded")) {
+        guide.classList.remove("unfolded");
+    } else {
+        guide.classList.add("unfolded");
+    }
+});
