@@ -1,27 +1,19 @@
-<!DOCTYPE html>
-<html lang="pl">
 <head>
     <title>mObywatel</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="assets/qr.css">
-    <link rel="stylesheet" href="assets/main.css">
-    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="apple-touch-icon" href="https://i.imgur.com/n4zJhma.png">
-    <link rel="shortcut icon" href="https://i.imgur.com/n4zJhma.png">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="https://fobywatel.xyz/assets/qr.css">
+    <link rel="stylesheet" href="https://fobywatel.xyz/assets/main.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
+    <link rel="apple-touch-icon" href="https://fobywatel.xyz/assets/images/logo.png">
+    <link rel="shortcut icon" href="https://fobywatel.xyz/assets/images/logo.png">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
-
-    <div class="error">
-        <div class="opacity close"></div>
-        <div class="error_box">
-            <p class="error_title">Coś poszło nie tak...</p>
-            <p class="error_description">Wygląda na to, że wystąpił bład, spróbuj ponownie później.</p>
-            <p class="error_button close">Rozumiem</p>
-        </div>
-    </div>
 
     <div class="bottom_bar">
         <div class="bottom_bar_grid">
@@ -52,27 +44,26 @@
         <p class="main_title">Kod QR</p>
         <p class="description">Wybierz, co chcesz zrobić</p>
         <div class="action_grid">
-            <div class="action" id="scanQR">
-                <img class="action_image" src="https://i.imgur.com/VCThE9p.png">
+            <div class="action" onclick="sendTo('scan')">
+                <img class="action_image" src="https://fobywatel.xyz/assets/images/confirm.png">
                 <div class="action_text">
                     <p class="action_title">Zeskanuj kod QR</p>
                     <p class="action_subtitle">Zaloguj się lub potwierdź swoje dane.</p>
                 </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
+                <img class="arrow" src="https://fobywatel.xyz/assets/images/right_arrow_sharp.png">
             </div>
-            <div class="action" id="showQR">
-                <img class="action_image" src="https://i.imgur.com/SdPmeGM.png">
+            <div class="action" onclick="sendTo('show')">
+                <img class="action_image" src="https://fobywatel.xyz/assets/images/scan.png">
                 <div class="action_text">
                     <p class="action_title">Pokaż kod QR</p>
                     <p class="action_subtitle">Sprawdź dokument innej osoby.</p>
                 </div>
-                <img class="arrow" src="https://i.imgur.com/x27OY3D.png">
+                <img class="arrow" src="https://fobywatel.xyz/assets/images/right_arrow_sharp.png">
             </div>
         </div>
     </div>
 
     <script src="assets/bar.js"></script>
-    <script src="assets/qr.js"></script>
     <script src="assets/manifest.js"></script>
+    <script src="https://fobywatel.xyz/assets/cache.js"></script>
 </body>
-</html>
