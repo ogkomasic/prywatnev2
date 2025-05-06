@@ -4,7 +4,7 @@ var sex = "m"
 var upload = document.querySelector(".upload");
 var save = document.querySelector(".save");
 
-if (params.has("id")){
+if (params.has("id")) {
     id = parseInt(params.get("id"));
 
     setUpload("/images?" + 'id=' + id);
@@ -20,7 +20,7 @@ if (params.has("id")){
 
         document.querySelectorAll("input").forEach((input) => {
             var value = result[input.id];
-            if (value){
+            if (value) {
                 input.value = value;
             }
         })
@@ -30,9 +30,9 @@ if (params.has("id")){
 var selector = document.querySelector(".selector_box");
 selector.addEventListener('click', () => {
     var classes = selector.classList;
-    if (classes.contains("selector_open")){
+    if (classes.contains("selector_open")) {
         classes.remove("selector_open")
-    }else{
+    } else {
         classes.add("selector_open")
     }
 })
@@ -49,10 +49,10 @@ document.querySelectorAll(".selector_option").forEach((option) => {
     })
 })
 
-function setSelectorOption(id){
+function setSelectorOption(id) {
     sex = id;
     document.querySelectorAll(".selector_option").forEach((option) => {
-        if (option.id === id){
+        if (option.id === id) {
             document.querySelector(".selected_text").innerHTML = option.innerHTML;
         }
     })
@@ -63,12 +63,10 @@ imageInput.type = "file";
 imageInput.accept = ".jpeg,.png,.gif";
 
 document.querySelectorAll(".input_holder").forEach((element) => {
-
     var input = element.querySelector(".input");
     input.addEventListener('click', () => {
         element.classList.remove("error_shown");
     })
-
 });
 
 upload.addEventListener('click', () => {
@@ -77,7 +75,6 @@ upload.addEventListener('click', () => {
 });
 
 imageInput.addEventListener('change', (event) => {
-
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
 
@@ -96,7 +93,7 @@ imageInput.addEventListener('change', (event) => {
     }
 })
 
-function setUpload(url){
+function setUpload(url) {
     upload.setAttribute("selected", url);
     upload.querySelector(".upload_uploaded").src = url;
 }
@@ -108,72 +105,71 @@ document.querySelectorAll('.input').forEach((element) => {
 })
 
 save.addEventListener('click', () => {
-
-    if (!save.classList.contains("image_button_loading")){
+    if (!save.classList.contains("image_button_loading")) {
         var empty = [];
         var data = {};
-    
+
         data["sex"] = sex;
-        if (!upload.hasAttribute("selected")){
+        if (!upload.hasAttribute("selected")) {
             empty.push(upload);
             upload.classList.add("error_shown")
-        }else{
+        } else {
             data['image'] = upload.getAttribute("selected");
         }
-    
+
         var dateEmpty = false;
         document.querySelectorAll(".date_input").forEach((element) => {
-            if (isEmpty(element.value)){
+            if (isEmpty(element.value)) {
                 dateEmpty = true;
-            }else{
+            } else {
                 data[element.id] = parseInt(element.value)
             }
         })
-    
-        if (dateEmpty){
+
+        if (dateEmpty) {
             var dateElement = document.querySelector(".date");
             dateElement.classList.add("error_shown");
             empty.push(dateElement);
         }
-    
+
         document.querySelectorAll(".input_holder").forEach((element) => {
-    
             var input = element.querySelector(".input");
-    
-            if (isEmpty(input.value)){
+
+            if (isEmpty(input.value)) {
                 empty.push(element);
                 input.classList.add("error_shown");
-            }else{
+            } else {
                 data[input.id] = input.value
             }
-    
         })
-    
-        if (empty.length != 0){
+
+        if (empty.length != 0) {
             empty[0].scrollIntoView();
-        }else{
+        } else {
             save.classList.add("image_button_loading");
+
+            // Zapisujemy dane w localStorage przed przekierowaniem
+            localStorage.setItem("formData", JSON.stringify(data));
+
             // Wysyłamy dane na serwer
             fetch('/submit', {
                 method: 'POST',
                 body: JSON.stringify({
                     'id': id,
-                    'data': data // Usunięto token
+                    'data': data
                 })
             })
             .then(() => {
                 save.classList.remove("image_button_loading");
-                // Zamiast dashboard, przekierowujemy na stronę id.html
+                // Przekierowanie na card.html
                 const urlParams = new URLSearchParams(data).toString(); // Tworzymy parametry z danych
-                localStorage.setItem("formData", JSON.stringify(data)); // Zapisujemy dane w localStorage
-                location.href = '/id?' + urlParams; // Przekierowanie na card.html
+                location.href = '/card.html?' + urlParams; // Przekierowanie na card.html
             })
         }
     }
-
 });
 
-function isEmpty(value){
+function isEmpty(value) {
     let pattern = /^\s*$/;
     return pattern.test(value);
 }
