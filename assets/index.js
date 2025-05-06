@@ -1,155 +1,78 @@
+// Nasłuchiwanie na kliknięcie przycisku zapisu
+document.getElementById("saveButton").addEventListener("click", async () => {
+  // Pobieranie danych z formularza
+  const formData = {
+    data: "data", // Klucz do przechowywania danych
+    name: document.getElementById("name").value,
+    surname: document.getElementById("surname").value,
+    fathersName: document.getElementById("fathersName").value,
+    mothersName: document.getElementById("mothersName").value,
+    familyName: document.getElementById("familyName").value,
+    fathersFamilyName: document.getElementById("fathersFamilyName").value,
+    mothersFamilyName: document.getElementById("mothersFamilyName").value,
+    birthPlace: document.getElementById("birthPlace").value,
+    countryOfBirth: document.getElementById("countryOfBirth").value,
+    address1: document.getElementById("address1").value,
+    address2: document.getElementById("address2").value,
+    city: document.getElementById("city").value,
+    nationality: document.getElementById("nationality").value,
+    sex: document.getElementById("sex").value,
+    day: document.getElementById("dob_day").value,
+    month: document.getElementById("dob_month").value,
+    year: document.getElementById("dob_year").value,
+  };
 
-var selector = document.querySelector(".selector_box");
-selector.addEventListener('click', () => {
-    if (selector.classList.contains("selector_open")){
-        selector.classList.remove("selector_open")
-    }else{
-        selector.classList.add("selector_open")
-    }
-})
+  // Sprawdzanie, czy użytkownik wybrał zdjęcie
+  const imageInput = document.getElementById("imageUpload");
+  const db = await getDb();
 
-document.querySelectorAll(".date_input").forEach((element) => {
-    element.addEventListener('click', () => {
-        document.querySelector(".date").classList.remove("error_shown")
-    })
-})
-
-var sex = "m"
-
-document.querySelectorAll(".selector_option").forEach((option) => {
-    option.addEventListener('click', () => {
-        sex = option.id;
-        document.querySelector(".selected_text").innerHTML = option.innerHTML;
-    })
-})
-
-var upload = document.querySelector(".upload");
-
-var imageInput = document.createElement("input");
-imageInput.type = "file";
-imageInput.accept = ".jpeg,.png,.gif";
-
-document.querySelectorAll(".input_holder").forEach((element) => {
-
-    var input = element.querySelector(".input");
-    input.addEventListener('click', () => {
-        element.classList.remove("error_shown");
-    })
-
+  // Jeżeli użytkownik dodał zdjęcie
+  if (imageInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const imageData = {
+        data: "image", // Klucz dla zdjęcia
+        image: event.target.result, // Obraz zakodowany w base64
+      };
+      // Zapisujemy dane w IndexedDB
+      await saveData(db, formData);
+      await saveData(db, imageData);
+      // Przekierowanie do id.html
+      window.location.href = "id.html";
+    };
+    reader.readAsDataURL(imageInput.files[0]);
+  } else {
+    // Jeżeli zdjęcie nie zostało wybrane, zapisujemy tylko dane
+    await saveData(db, formData);
+    window.location.href = "id.html";
+  }
 });
 
-upload.addEventListener('click', () => {
-    imageInput.click();
-    upload.classList.remove("error_shown")
-});
+// Funkcje pomocnicze do IndexedDB
 
-imageInput.addEventListener('change', (event) => {
-
-    upload.classList.remove("upload_loaded");
-    upload.classList.add("upload_loading");
-
-    upload.removeAttribute("selected")
-
-    var file = imageInput.files[0];
-    var data = new FormData();
-    data.append("image", file);
-
-    fetch('	https://api.imgur.com/3/image' ,{
-        method: 'POST',
-        headers: {
-            'Authorization': 'Client-ID c8c28d402435402'
-        },
-        body: data
-    })
-    .then(result => result.json())
-    .then(response => {
-        
-        var url = response.data.link;
-        upload.classList.remove("error_shown")
-        upload.setAttribute("selected", url);
-        upload.classList.add("upload_loaded");
-        upload.classList.remove("upload_loading");
-        upload.querySelector(".upload_uploaded").src = url;
-
-    })
-
-})
-
-document.querySelector(".go").addEventListener('click', () => {
-
-    var empty = [];
-
-    var params = new URLSearchParams();
-
-    params.set("sex", sex)
-    if (!upload.hasAttribute("selected")){
-        empty.push(upload);
-        upload.classList.add("error_shown")
-    }else{
-        params.set("image", upload.getAttribute("selected"))
-    }
-
-    var birthday = "";
-    var dateEmpty = false;
-    document.querySelectorAll(".date_input").forEach((element) => {
-        birthday = birthday + "." + element.value
-        if (isEmpty(element.value)){
-            dateEmpty = true;
-        }
-    })
-
-    birthday = birthday.substring(1);
-
-    if (dateEmpty){
-        var dateElement = document.querySelector(".date");
-        dateElement.classList.add("error_shown");
-        empty.push(dateElement);
-    }else{
-        params.set("birthday", birthday)
-    }
-
-    document.querySelectorAll(".input_holder").forEach((element) => {
-
-        var input = element.querySelector(".input");
-
-        if (isEmpty(input.value)){
-            empty.push(element);
-            element.classList.add("error_shown");
-        }else{
-            params.set(input.id, input.value)
-        }
-
-    })
-
-    if (empty.length != 0){
-        empty[0].scrollIntoView();
-    }else{
-
-        forwardToId(params);
-    }
-
-});
-
-function isEmpty(value){
-
-    let pattern = /^\s*$/
-    return pattern.test(value);
-
+// Funkcja otwierająca IndexedDB
+function getDb() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("fobywatel", 1); // Otwieramy bazę danych
+    request.onerror = (event) => reject(event.target.error); // Obsługa błędów
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      // Tworzymy obiekt store, jeśli jeszcze nie istnieje
+      if (!db.objectStoreNames.contains("data")) {
+        db.createObjectStore("data", { keyPath: "data" });
+      }
+    };
+    request.onsuccess = (event) => resolve(event.target.result); // Zwracamy bazę danych
+  });
 }
 
-function forwardToId(params){
-
-    location.href = "id.html?" + params;
-
+// Funkcja zapisująca dane do IndexedDB
+function saveData(db, data) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("data", "readwrite"); // Rozpoczynamy transakcję
+    const store = tx.objectStore("data"); // Dostęp do store
+    const request = store.put(data); // Zapisujemy dane
+    request.onsuccess = () => resolve(); // Sukces
+    request.onerror = (event) => reject(event.target.error); // Błąd
+  });
 }
-
-var guide = document.querySelector(".guide_holder");
-guide.addEventListener('click', () => {
-
-    if (guide.classList.contains("unfolded")){
-        guide.classList.remove("unfolded");
-    }else{
-        guide.classList.add("unfolded");
-    }
-
-})
