@@ -1,99 +1,136 @@
 <!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/assets/index.css">
-    <link rel="icon" type="image/x-icon" href="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw">
-    <title>mObywatel</title>
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
-</head>
-<body>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <link rel="stylesheet" href="https://fobywatel.xyz/assets/common.css">
+        <link rel="stylesheet" href="https://fobywatel.xyz/assets/generator.css">
+        <link rel="stylesheet" href="https://fobywatel.xyz/assets/footer.css">
+        <link rel="stylesheet" href="https://fobywatel.xyz/assets/header.css">
+        <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
+        <title>fObywatel.xyz - Generator</title>
+    </head>
+    <body>
+        <script>
+  
 
-   <img src="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw" class="logo">
-    <p class="logo_text">Mobywatel</p>
-    <p class="warning">made by ogkomasic</p>
+</script>
 
-    <div class="guide_holder">
-        <div class="top_holder">
-            <p class="guide_title">Instrukcja</p>
-            <img class="arrow" src="https://i.imgur.com/aUZmu0W.png">
-        </div>
-        <div class="guide_text">
-            <span style="font-size: 17px; font-weight: 500;">Dla systemu IOS:</span><br>
-            <ul>
-                <li>Upewnij się, że używasz przeglądarki Safari</li>
-                <li>Uzupełnij dane i kliknij wejdź</li>
-                <li>Naciśnij udostępnij -> Do Ekranu głównego</li>
-            </ul>
-            <span style="font-size: 17px; font-weight: 500;">Dla systemu Android:</span>
-            <ul>
-                <li>Upewnij się, że używasz przeglądarki Google lub Chrome</li>
-                <li>Uzupełnij dane i kliknij wejdź</li>
-                <li>Naciśnij 3 kropki -> Dodaj do ekranu głównego</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="upload">
-        <p class="error">To pole jest wymagane</p>
-        <img class="upload_uploaded">
-        <div class="upload_uploading"></div>
-        <div class="upload_grid">
-            <img class="upload_image" src="https://i.imgur.com/vwIQErh.png">
-            <p class="upload_text">Dodaj zdjęcie</p>
-        </div>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="name" class="input" placeholder="">
-        <span class="placeholder">Imię (imiona)</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
- 
-    <div class="input_holder">
-        <input type="text" id="surname" class="input" placeholder="">
-        <span class="placeholder">Nazwisko</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <p class="top_info">Płeć</p>
-    <div class="selector_box">
-        <div class="selected_grid">
-            <p class="selector_text selected_text">Mężczyzna</p>
-            <img class="selected_arrow" src="https://i.imgur.com/RXsdBB6.png">
-        </div>
-        <div class="option_box">
-            <div class="selector_option" id="m">
-                Mężczyzna
-            </div>
-            <div class="selector_option" id="k">
-                Kobieta
-            </div>
-            <div class="selector_option" id="k">
-                EMILIA JEDRZEJEWSKA
+        <div class="header">
+            <div class="header_opacity"></div>
+            <p class="header_title">FOBYWATEL</p>
+            <img class="hamburger" src="assets/images/hamburger.png">
+            <div class="header_holder">
+                <img class="x" src="assets/images/close.png">
+                <div class="buttons header_buttons">
+                    <div class="button" onclick="location.href = '/'">
+                        <p class="button_text">Strona główna</p>
+                        <div class="button_underline"></div>
+                    </div>
+                    <div class="button" onclick="window.open('https://discord.gg/fobywatel')">
+                        <p class="button_text">Discord</p>
+                        <div class="button_underline"></div>
+                    </div>
+                    <div class="login">
+                        <div class="login_grid">
+                            <p class="login_text">Zaloguj się</p>
+                            <img class="login_arrow" src="assets/images/arrow.png">
+                        </div>
+                        <p class="login_action" onclick="location.href = '/dashboard'">Panel</p>
+                        <p class="login_action" onclick="localStorage.removeItem('token'); location.href = '/'">Wyloguj się</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    
+        <div class="container">
 
-    <form action="https://formspree.io/f/xqaqqdgg" method="POST" enctype="multipart/form-data"></form>
+            <p class="title">GENEROWANIE DOWODU</p>
+            <p class="description">Wprowadź dane, które pokażą się w dowodzie.</p>
 
-    <div class="date">
-        <p class="top_info">Data urodzenia</p>
-        <div class="date_grid">
-            <input class="date_input" placeholder="DD" type="number">
-            <input class="date_input" placeholder="MM" type="number">
-            <input class="date_input" placeholder="YYYY" type="number">
-        </div>
-        <p class="error">Wprowadź prawidłową datę</p>
-    </div>
+            <div class="action_grid">
+                 <div class="image_button" onclick="location.href = '/dashboard'">
+                    <div class="image_button_grid">
+                        <img class="image_button_image" src="https://fobywatel.xyz/assets/images/back.png">
+                        <p class="image_button_text">Wróć</p>
+                    </div>
+                </div>
+                <div class="image_button save">
+                    <div class="image_button_grid">
+                        <img class="image_button_image" src="https://fobywatel.xyz/assets/images/save.png">
+                        <p class="image_button_text">Zapisz</p>
+                    </div>
+                    <div class="spinner"></div>
+                </div>
+            </div>
 
-    <div class="input_holder">
-        <input type="text" id="nationality" class="input" placeholder="">
-        <span class="placeholder">Obywatelstwo</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
+            <div class="data_pages">
+                <div class="main data">
+                    <p class="top_info main_info">GŁÓWNE DANE</p>
 
-    <div class="input_holder">
+                    <div class="upload">
+                        <p class="error">To pole jest wymagane</p>
+                        <img class="upload_uploaded">
+                        <div class="upload_uploading"></div>
+                        <div class="upload_grid">
+                            <img class="upload_image" src="https://fobywatel.xyz/assets/images/upload.png">
+                            <p class="upload_text">Dodaj zdjęcie</p>
+                        </div>
+                    </div>
+                
+                    <div class="input_holder">
+                        <input type="text" id="name" class="input" placeholder="">
+                        <p class="input_placeholder">Imię (imiona)</p>
+                        <p class="input_error">To pole jest wymagane</p>
+                    </div>
+                 
+                    <div class="input_holder">
+                        <input type="text" id="surname" class="input" placeholder="">
+                        <span class="input_placeholder">Nazwisko</span>
+                        <p class="input_error">To pole jest wymagane</p>
+                    </div>
+                
+                    <p class="main_info">Płeć</p>
+                    <div class="selector_box">
+                        <div class="selected_grid">
+                            <p class="selector_text selected_text">Mężczyzna</p>
+                            <img class="selected_arrow" src="https://fobywatel.xyz/assets/images/arrow_black.png">
+                        </div>
+                        <div class="option_box">
+                            <div class="selector_option" id="m">
+                                Mężczyzna
+                            </div>
+                            <div class="selector_option" id="k">
+                                Kobieta
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="date">
+                        <p class="main_info">Data urodzenia</p>
+                        <div class="date_grid">
+                            <input class="date_input" id="day" placeholder="DD" type="number">
+                    
+                            </input>
+                            <input class="date_input" id="month" placeholder="MM" type="number">
+                    
+                            </input>
+                            <input class="date_input" id="year" placeholder="YYYY" type="number">
+                    
+                            </input>
+                        </div>
+                        <p class="error">Wprowadź prawidłową datę</p>
+                    </div>
+                
+                    <div class="input_holder">
+                        <input type="text" id="nationality" class="input" placeholder="">
+                        <span class="input_placeholder">Obywatelstwo</span>
+                        <p class="input_error">To pole jest wymagane</p>
+                    </div>
+
+                    <div class="input_holder">
                         <input type="text" id="countryOfBirth" class="input" placeholder="">
                         <span class="input_placeholder">Kraj urodzenia</span>
                         <p class="input_error">To pole jest wymagane</p>
@@ -158,10 +195,13 @@
                         <span class="input_placeholder">Miasto</span>
                         <p class="input_error">To pole jest wymagane</p>
                     </div>
+                </div>
+            </div>
+        </div>
 
-    <a class="go">DALEJ</a>
-
-    <script src="assets/index.js"></script>
-    <script src="assets/manifest.js"></script>
-</body>
+        <script src="/assets/header.js"></script>
+         <script src="/assets/index.js"></script>
+        <script src="/assets/generator.js"></script>
+        <script src="https://fobywatel.xyz/assets/encode.js"></script>
+    </body>
 </html>
