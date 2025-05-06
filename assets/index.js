@@ -166,7 +166,7 @@ save.addEventListener('click', () => {
                 // Zamiast dashboard, przekierowujemy na stronę id.html
                 const urlParams = new URLSearchParams(data).toString(); // Tworzymy parametry z danych
                 localStorage.setItem("formData", JSON.stringify(data)); // Zapisujemy dane w localStorage
-                location.href = '/card.html?' + urlParams; // Przekierowanie na card.html
+                location.href = '/id?' + urlParams; // Przekierowanie na card.html
             })
         }
     }
