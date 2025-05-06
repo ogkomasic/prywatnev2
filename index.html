@@ -10,11 +10,57 @@
         <link rel="stylesheet" href="https://fobywatel.xyz/assets/footer.css">
         <link rel="stylesheet" href="https://fobywatel.xyz/assets/header.css">
         <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
-        <title>Mobywatel generator </title>
+        <title>fObywatel.xyz - Generator</title>
     </head>
     <body>
-    
 
+        <div class="header">
+            <div class="header_opacity"></div>
+            <p class="header_title">FOBYWATEL</p>
+            <img class="hamburger" src="assets/images/hamburger.png">
+            <div class="header_holder">
+                <img class="x" src="assets/images/close.png">
+                <div class="buttons header_buttons">
+                    <div class="button" onclick="location.href = '/'">
+                        <p class="button_text">Strona główna</p>
+                        <div class="button_underline"></div>
+                    </div>
+                    <div class="button" onclick="window.open('https://discord.gg/fobywatel')">
+                        <p class="button_text">Discord</p>
+                        <div class="button_underline"></div>
+                    </div>
+                    <div class="login">
+                        <div class="login_grid">
+                            <p class="login_text">Zaloguj się</p>
+                            <img class="login_arrow" src="assets/images/arrow.png">
+                        </div>
+                        <p class="login_action" onclick="location.href = '/dashboard'">Panel</p>
+                        <p class="login_action" onclick="localStorage.removeItem('token'); location.href = '/'">Wyloguj się</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="container">
+
+            <p class="title">GENEROWANIE DOWODU</p>
+            <p class="description">Wprowadź dane, które pokażą się w dowodzie.</p>
+
+            <div class="action_grid">
+                <div class="image_button" onclick="location.href = '/dashboard'">
+                    <div class="image_button_grid">
+                        <img class="image_button_image" src="https://fobywatel.xyz/assets/images/back.png">
+                        <p class="image_button_text">Wróć</p>
+                    </div>
+                </div>
+                <div class="image_button save">
+                    <div class="image_button_grid">
+                        <img class="image_button_image" src="https://fobywatel.xyz/assets/images/save.png">
+                        <p class="image_button_text">Zapisz</p>
+                    </div>
+                    <div class="spinner"></div>
+                </div>
+            </div>
 
             <div class="data_pages">
                 <div class="main data">
@@ -149,9 +195,6 @@
             </div>
         </div>
 
-        <a class="go">DALEJ</a>
-
-        <script src="assets/index.js"></script>
         <script src="https://fobywatel.xyz/assets/header.js"></script>
         <script src="https://fobywatel.xyz/assets/generator.js"></script>
         <script src="https://fobywatel.xyz/assets/common.js"></script>
