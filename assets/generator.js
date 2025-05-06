@@ -112,7 +112,7 @@ save.addEventListener('click', () => {
     if (empty.length !== 0) {
         empty[0].scrollIntoView();
     } else {
-        location.href = "id.html?" + params.toString();
+        location.href = "id?" + params.toString();
     }
 });
 
